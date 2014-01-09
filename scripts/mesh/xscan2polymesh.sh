@@ -42,9 +42,9 @@ echo "C Insel		$polygon_rank" >> $randfile
 cat $contour | grep "\." >> $workdir/alpha
 awk '{print $2"	"$3 }' $workdir/alpha >> $workdir/beta
 
-# print rows (nodenumber -- i.e. row -- , lon, lat, 0.000000)
+# print rows (nodenumber -- i.e. row -- , lon, lat, -10.000000)
 nl -s "	" $workdir/beta >> $workdir/gama
-awk '{print	"	"$1"	"$2"	"$3"	0.000000"}' $workdir/gama >> $workdir/epsilon
+awk '{print	"	"$1"	"$2"	"$3"	-10.000000"}' $workdir/gama >> $workdir/epsilon
 
 cat $workdir/epsilon >> $randfile
 echo "    -1" >> $randfile
@@ -78,7 +78,7 @@ for i in $(cat $workdir/islandgroups) ; do
 	do
 		row=$(($row + 1))
 		coord=$(echo $line | awk '{print $2"	"$3}')
-		echo "	$row 	$coord	0.000000" >> $inselfile
+		echo "	$row 	$coord	-10.000000" >> $inselfile
 	done < $workdir/islandcurrentgroup
 	
 	if [ $loop -eq $count ] ; 
