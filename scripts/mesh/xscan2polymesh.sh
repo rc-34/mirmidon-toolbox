@@ -10,10 +10,10 @@
 
 #!/bin/bash
 
-if [ $# -ne 2 ] 
+if [ $# -ne 2 ] && [ $# -ne 3 ] 
 	then
-	echo "Usage: ./xscan2polymesh.sh <path-to-xscan-contour-file> <path-to-xscan-island-file>"
-	echo "example: ./xscan2polymesh.sh ./med500-contour.scan ./med500-island.scan"
+	echo "Usage: ./xscan2polymesh.sh <path-to-xscan-contour-file> <path-to-xscan-island-file> [ <path-to-xscan-polygon-file> ]"
+	echo "example: ./xscan2polymesh.sh ./med500-contour.scan ./med500-island.scan ./polygon.scan"
 	exit 1
 fi
 
@@ -22,6 +22,7 @@ contour=$1
 island=$2
 randfile="rand.dat"
 inselfile="insel.dat"
+polygonfile="polygon.dat"
 workdir="work"
 ## END PARAMETERS ##
 
@@ -99,6 +100,21 @@ awk '{if ($3 ~/E/) {split($3,a,"E"); b=a[1]*10^a[2]; print "	"$1"	"$2"	"b"	"$4 ;
 echo "Clearing Insel.dat"
 awk '{if ($2 ~/E/) {split($2,a,"E"); b=a[1]*10^a[2]; print "	"$1"	"b"	"$3"	"$4 ; } else {print $0} }' $inselfile > $workdir/tmpinsel1
 awk '{if ($3 ~/E/) {split($3,a,"E"); b=a[1]*10^a[2]; print "	"$1"	"$2"	"b"	"$4 ; } else {print $0} }' $workdir/tmpinsel1 > $inselfile
+
+if [ $# -eq 3 ]
+	then
+	# work on polygon file
+	echo "Work on polygon.dat...(THIS VERSION ALLOWS ONLY ONE POLYGON !!!!)"
+	#header
+	echo "C 	polygon" > $polygonfile
+	
+	#rest of polygon points
+	sed '1d' $3 > $workdir/tmppol
+	awk 'BEGIN {x=0} {print	"	"x"	"$2"	"$3"	10000.00"; x++}' $workdir/tmppol >> $polygonfile
+
+	#end of polygon
+	echo "    -1" >> $polygonfile
+fi
 
 echo "That's all folks!!!"
 
