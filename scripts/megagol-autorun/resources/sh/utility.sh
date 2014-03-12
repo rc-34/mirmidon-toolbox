@@ -33,9 +33,27 @@ function log(){
     else
       echo -e "[ $ROUGE FAIL $NORMAL ]" $2
       echo "[ FAIL ]" $2 " - Return code " $1 >> $LOGFILE
+      exit $1
     fi
 }
 
 function rightnow(){
     d=$(date '+%Y-%m-%d %H:%M:%S')
+}
+
+function llsubmit(){
+  if [ "$RUN" = "local" ] then 
+    log "notice" "$1 might be submitted"
+  elif ["$RUN" = "hpclr"] then
+    llsubmit $1 > submission-file.txt
+    jobid=$(tail -1 submission-file.txt | awk '{print $4}' | sed 's/\"//g')
+    isNotFinished=1
+    while [ $isNotFinished ]
+    do
+      isNotFinished=$(llq -u $USER | grep $jobid | wc -l)
+    done
+  else
+    return -1
+  fi
+  return 0
 }

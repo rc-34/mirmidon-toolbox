@@ -9,9 +9,8 @@
 ###ENV###
 export WORKINGDIR=path-to-working-dir
 export WWATCH3_NETCDF=NC4
-export NETCDF_CONFIG=/work/mirmidon/softs/intel-11.1-soft/io/netcdf/netcdf-fortran-4.1.3/bin/nc-config
-export LD_LIBRARY_PATH=/work/mirmidon/softs/intel-11.1-soft/io/hdf5/hdf5-1.8.11/lib:/work/mirmidon/softs/intel-11.1-soft/io/netcdf/netcdf-fortran-4.1.3/lib:$LD_LIBRARY_PATH
-
+export NETCDF_CONFIG=/work/mirmidon/softs/intel-13.x-soft/io/netcdf/netcdf-fortran-4.1.3/bin/nc-config
+export LD_LIBRARY_PATH=/work/mirmidon/softs/intel-13.x-soft/io/netcdf/netcdf-fortran-4.1.3/lib:$LD_LIBRARY_PATH
 echo 'POSTPROCESSING...'
 echo 'Change directory to $WORKINGDIR'
 

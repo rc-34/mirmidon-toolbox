@@ -11,5 +11,5 @@ Before any submission, please compile the WaveWatch III (v4.18 or later) model. 
 
 Launch
 ======
-Once all the prerequisite stuff has been done, just submit the autorun.cmd on the cluster. You'll find udpate of your job in the LOG file.
+Once all the prerequisite stuff has been done, just submit the autorun.cmd on the cluster. You'll find udpate of your job in the $LOG -- default = logs -- file.
 
