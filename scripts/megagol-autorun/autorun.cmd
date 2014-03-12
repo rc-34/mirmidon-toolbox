@@ -14,16 +14,17 @@
 		#2c-1 particular case in strt pre-routine for year 1
 		#2c-2 otherwise
 	#2d submit shel.cmd
-	#2e scrutation while job isn't finished
+	#2e submit post-processing work
 	#2f move outputs from working dir to corresponding outputs dir
 #3 clean stuff
-#4 verify the overall behaviour of the script -- by checking availability of outputs files -- 
 #############################################################################################
 
 #RUN may be 'local' or 'hpclr'
 export RUN="local"
 export USER="chailanr"
 export ROOTDIR="/Users/rchailan/Desktop/OnGoing/mirmidon-toolbox/SCRIPTS/megagol-autorun/work"
+export outdirspec="/Users/rchailan/Desktop/OnGoing/mirmidon-toolbox/SCRIPTS/megagol-autorun/outputs/spec"
+export outdirgridded="/Users/rchailan/Desktop/OnGoing/mirmidon-toolbox/SCRIPTS/megagol-autorun/outputs/gridded"
 
 #output & error redirection to log
 #exec 2>autorun.err 1>autorun.out
@@ -118,15 +119,40 @@ for year in $sequence ; do
 		#2c-2
 		llsubmit $workdir/pre-processing.cmd
 	fi
-	log $? "Pre-processing actions"
+	log $? "Pre-processing job"
 
 	checkshelinputs $workdir
 	log $? "Ready for shel submission"
+	
 	#2d shel submission
-	
-	
+	llsubmit $workdir/shel.cmd
+	log $? "Shel job"
+
+	#threads for efficiency
+	#2e post-processing
+	#2d move outputs
+	postprocess $workdir $year &
 done
+
+#3 clean
+#rm -Rf work/*
 
 #end
 rightnow
 echo "$d => That's all folks !!!"
+
+
+function postprocess() {
+	workdir=$1
+	year=$2
+	#2e post-processing
+	llsubmit $workdir/post-processing.cmd
+	log $? "Post-processing-$year"
+
+	#2d move outputs
+	mkdir $outdirspec/$year
+	mkdir $outdirgridded/$year
+	mv $workdir/OUNP*.nc $outdirspec/$year/.
+	mv $workdir/MEDNORD*.nc $outdirgridded/$year/.
+	log $? "move outputs - $year"
+}
