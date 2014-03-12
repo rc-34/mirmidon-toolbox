@@ -1,1 +1,4 @@
 *.nc
+*.out
+*.err
+*logs*
