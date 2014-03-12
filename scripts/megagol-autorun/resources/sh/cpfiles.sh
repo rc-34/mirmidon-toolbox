@@ -1,14 +1,17 @@
 #!/bin/bash
 
 function cpexe(){
-	cp exe/* $1
+	cp resources/exe/* $1/.
 	return $?
 }
 function cpcmd(){
-	cp cmd/* $1
+	cp resources/cmd/* $1/.
 	return $?
 }
 function cpinp(){
-	cp inp/* $1
+	cp resources/inp/* $1/.
 	return $?
+}
+function  cpmesh(){
+	cp inputs/mesh/mesh.msh $1/.
 }

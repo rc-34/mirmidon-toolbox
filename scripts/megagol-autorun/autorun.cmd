@@ -69,6 +69,8 @@ for year in $sequence ; do
 	log $? "Copy of generic cmd"
 	cpinp $workdir
 	log $? "Copy of generic inp"
+	cpmesh $workdir
+	log $? "Copy mesh file"
 
 	#2a workdir
 	if [ $year -eq $beginningyear ] 
@@ -79,18 +81,18 @@ for year in $sequence ; do
 		log $? "Inp files updates"
 		formatcmd $workdir
 		log $? "Cmd files updates"
-		#checkinputs
-		#log $? "Ready for submission"
-		llsubmit resources/pre-processing-firstyear.cmd
+		checkinputs $workdir
+		log $? "Ready for submission"
+		#llsubmit resources/pre-processing-firstyear.cmd
 	else
 		#2a-2
 		formatinp $workdir $year $isFirstyear
 		log $? "Inp files updates"
 		formatcmd $workdir
 		log $? "Cmd files updates"
-
-		
-		llsubmit resources/pre-processing.cmd
+		checkinputs $workdir
+		log $? "Ready for submission"
+		#llsubmit resources/pre-processing.cmd
 	fi 
 	log "raw" "==== STEP2a: $year workdir init ===="
 done
