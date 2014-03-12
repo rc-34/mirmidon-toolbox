@@ -3,24 +3,31 @@
 
 function formatinp(){
 	WORKDIR=$1
+	year=$2
 
 	#format begin and end date
-	beg=""$2"0101 000000"
-	end=""$(( $2 + 1 ))"0101 000000"
+	beg=""$year"0101 000000"
+	end=""$(( $year + 1 ))"0101 000000"
 
 	sed -i '' "s/((begindate))/$beg/g" $WORKDIR/*.inp
 	sed -i '' "s/((enddate))/$end/g" $WORKDIR/*.inp
 
 	restarttimestep="30240000"
-
-	if [ ! $3 ]
+	
+	if [ $3 = false ]
 		then
 		#isnot first year
-		begshel=""$(( $2 - 1 ))"1201 000000"
-		sed -i '' "s/((begindate))/$begshel/g" $WORKDIR/ww3_shel.inp
-		restarttimestep="32918400"
+		begshel=""$(( $year - 1 ))"1216 000000"
+		sed -i '' "s/$beg/$begshel/g" $WORKDIR/ww3_shel.inp
+
+		restarttimestep="31536000"
 	fi
-	
+	isLeapYear $year
+	if [ $? = 1 ]
+		then
+		log "warning" "I am a leap year - specific restart timestep"
+		restarttimestep=$(( $restarttimestep + 86400))
+	fi
 	#format restart timestep
 	sed -i '' "s/((restarttimestep))/$restarttimestep/g" $WORKDIR/ww3_shel.inp
 
@@ -34,3 +41,19 @@ function formatcmd(){
 	
 	return $?
 }
+
+function isLeapYear (){
+ # if ((year modulo 4 is 0) and (year modulo 100 is not 0))
+ #    or (year modulo 400 is 0)
+ #        then true
+ #    else false
+ year=$1
+ if [[ ( $(( $year % 4 )) = 0 ) && ( $(( $year % 100 )) != 0 ) || ( $(( $year % 400 )) = 0 ) ]] ;
+ 	then
+ 	return 1
+ else 
+ 	return 0
+ fi
+
+}
+    

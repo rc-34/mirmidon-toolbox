@@ -57,5 +57,12 @@ function llsubmit(){
   else
     return -1
   fi
-  return 0
+
+  if [ -s $workdir/job.err ]
+    then
+    echo "error found in $workdir/job.err"
+    return -1
+  else
+    return 0
+  fi
 }

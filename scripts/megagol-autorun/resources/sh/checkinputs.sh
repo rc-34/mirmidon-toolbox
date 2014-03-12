@@ -80,5 +80,16 @@ function checkinputs(){
 		returnCode=-1
 	fi
 
+	if [ $(ls $WORKINGDIR | grep ARPERA*.nc | wc -l) -le 1 ]
+		then
+		log "warning" "No input wind matching ARPERA pattern found"
+		returnCode=-1
+	fi
+	if [ $(ls $WORKINGDIR | grep NM824*.nc | wc -l) -le 1 ]
+		then
+		log "warning" "No input current matching NM824 pattern found"
+		returnCode=-1
+	fi
+
 	return $returnCode
 }

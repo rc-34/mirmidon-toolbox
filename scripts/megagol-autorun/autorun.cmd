@@ -61,9 +61,10 @@ for year in $sequence ; do
 	#source format-inp and utilities
 	source ./resources/sh/reformat.sh
 	source ./resources/sh/checkinputs.sh
+	source ./resources/sh/checkshelinputs.sh
 	source ./resources/sh/cpfiles.sh
 
-	isFirstyear=0
+	isFirstyear=false
 	workdir=$ROOTDIR/$year
 	mkdir -p $ROOTDIR/$year
 	cpexe $workdir
@@ -81,25 +82,49 @@ for year in $sequence ; do
 	if [ $year -eq $beginningyear ] 
 		#2a-1
 		then
-		isFirstyear=1
+		isFirstyear=true
+		#2b reformat
 		formatinp $workdir $year $isFirstyear
-		log $? "Inp files updates"
+		log $? "Inp files reformat"
 		formatcmd $workdir
-		log $? "Cmd files updates"
+		log $? "Cmd files reformat"
+
+		cparpera $workdir $year $isFirstyear
+		log $? "Wind files copy"
+		cpnm824 $workdir $year $isFirstyear
+		log $? "Currents files copy"
+
 		checkinputs $workdir
 		log $? "Ready for submission"
+		#2c-1
 		llsubmit $workdir/pre-processing-firstyear.cmd
 	else
 		#2a-2
+		#2b reformat
 		formatinp $workdir $year $isFirstyear
-		log $? "Inp files updates"
+		log $? "Inp files reformat"
 		formatcmd $workdir
-		log $? "Cmd files updates"
+		log $? "Cmd files reformat"
+
+		cparpera $workdir $year $isFirstyear
+		log $? "Wind files copy"
+		cpnm824 $workdir $year $isFirstyear
+		log $? "Currents files copy"
+		cprestart $workdir $year
+		log $? "Restart files copy"
+
 		checkinputs $workdir
-		log $? "Ready for submission"
+		log $? "Ready for preprocessing submission"
+		#2c-2
 		llsubmit $workdir/pre-processing.cmd
-	fi 
-	log "raw" "==== STEP2a: workdir init ===="
+	fi
+	log $? "Pre-processing actions"
+
+	checkshelinputs $workdir
+	log $? "Ready for shel submission"
+	#2d shel submission
+	
+	
 done
 
 #end
