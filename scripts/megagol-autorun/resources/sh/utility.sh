@@ -42,9 +42,11 @@ function rightnow(){
 }
 
 function llsubmit(){
-  if [ "$RUN" = "local" ] then 
+  if [ "$RUN" = "local" ] 
+    then 
     log "notice" "$1 might be submitted"
-  elif ["$RUN" = "hpclr"] then
+  elif [ "$RUN" = "hpclr" ] 
+    then
     llsubmit $1 > submission-file.txt
     jobid=$(tail -1 submission-file.txt | awk '{print $4}' | sed 's/\"//g')
     isNotFinished=1

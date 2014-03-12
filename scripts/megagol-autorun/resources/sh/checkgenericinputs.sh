@@ -4,76 +4,76 @@ function checkgenericinputs(){
 	returnCode=0
 
 	## exe ##
-	if [ ! -e recources/exe/ww3_grid ]
+	if [ ! -e ./resources/exe/ww3_grid ]
 		then
-		log "warning" "./recources/exe/ww3_grid does not exists. Please verify ww3 compilation [and links]."
+		log "warning" "./resources/exe/ww3_grid does not exists. Please verify ww3 compilation [and links]."
 		returnCode=-1
 	fi
-	if [ ! -e recources/exe/ww3_prnc ]
+	if [ ! -e resources/exe/ww3_prnc ]
 		then
-		log "warning" "./recources/exe/ww3_prnc does not exists. Please verify ww3 compilation [and links]."
+		log "warning" "./resources/exe/ww3_prnc does not exists. Please verify ww3 compilation [and links]."
 		returnCode=-1
 	fi
-	if [ ! -e recources/exe/ww3_strt ]
+	if [ ! -e resources/exe/ww3_strt ]
 		then
-		log "warning" "./recources/exe/ww3_strt does not exists. Please verify ww3 compilation [and links]."
+		log "warning" "./resources/exe/ww3_strt does not exists. Please verify ww3 compilation [and links]."
 		returnCode=-1
 	fi
-	if [ ! -e recources/exe/ww3_shel ]
+	if [ ! -e resources/exe/ww3_shel ]
 		then
-		log "warning" "./recources/exe/ww3_shel does not exists. Please verify ww3 compilation [and links]."
+		log "warning" "./resources/exe/ww3_shel does not exists. Please verify ww3 compilation [and links]."
 		returnCode=-1
 	fi
-	if [ ! -e recources/exe/ww3_ounf ]
+	if [ ! -e resources/exe/ww3_ounf ]
 		then
-		log "warning" "./recources/exe/ww3_ounf does not exists. Please verify ww3 compilation [and links]."
+		log "warning" "./resources/exe/ww3_ounf does not exists. Please verify ww3 compilation [and links]."
 		returnCode=-1
 	fi
-	if [ ! -e recources/exe/ww3_ounp ]
+	if [ ! -e resources/exe/ww3_ounp ]
 		then
-		log "warning" "./recources/exe/ww3_ounp does not exists. Please verify ww3 compilation [and links]."
+		log "warning" "./resources/exe/ww3_ounp does not exists. Please verify ww3 compilation [and links]."
 		returnCode=-1
 	fi
 
 	## inp ##
-	if [ ! -e recources/inp/ww3_grid.inp ]
+	if [ ! -e resources/inp/ww3_grid.inp ]
 		then
-		log "warning" "./recources/inp/ww3_grid.inp does not exists."
+		log "warning" "./resources/inp/ww3_grid.inp does not exists."
 		returnCode=-1
 	fi
-	if [ ! -e recources/inp/ww3_prnc-current.inp ]
+	if [ ! -e resources/inp/ww3_prnc-current.inp ]
 		then
-		log "warning" "./recources/inp/ww3_prnc-current.inp does not exists."
+		log "warning" "./resources/inp/ww3_prnc-current.inp does not exists."
 		returnCode=-1
 	fi
-	if [ ! -e recources/inp/ww3_prnc-wind.inp ]
+	if [ ! -e resources/inp/ww3_prnc-wind.inp ]
 		then
-		log "warning" "./recources/inp/ww3_prnc-wind.inp does not exists."
+		log "warning" "./resources/inp/ww3_prnc-wind.inp does not exists."
 		returnCode=-1
 	fi
-	if [ ! -e recources/sh/prnc.sh ]
+	if [ ! -e resources/sh/prnc.sh ]
 		then
-		log "warning" "./recources/sh/prnc.sh does not exists."
+		log "warning" "./resources/sh/prnc.sh does not exists."
 		returnCode=-1
 	fi
-	if [ ! -e recources/inp/ww3_strt.inp ]
+	if [ ! -e resources/inp/ww3_strt.inp ]
 		then
-		log "warning" "./recources/inp/ww3_strt.inp does not exists."
+		log "warning" "./resources/inp/ww3_strt.inp does not exists."
 		returnCode=-1
 	fi
-	if [ ! -e recources/inp/ww3_shel.inp ]
+	if [ ! -e resources/inp/ww3_shel.inp ]
 		then
-		log "warning" "./recources/inp/ww3_shel.inp does not exists."
+		log "warning" "./resources/inp/ww3_shel.inp does not exists."
 		returnCode=-1
 	fi
-	if [ ! -e recources/inp/ww3_outp.inp ]
+	if [ ! -e resources/inp/ww3_ounf.inp ]
 		then
-		log "warning" "./recources/inp/ww3_outp.inp does not exists."
+		log "warning" "./resources/inp/ww3_ounf.inp does not exists."
 		returnCode=-1
 	fi
-	if [ ! -e recources/inp/ww3_ounp.inp ]
+	if [ ! -e resources/inp/ww3_ounp.inp ]
 		then
-		log "warning" "./recources/inp/ww3_ounp.inp does not exists."
+		log "warning" "./resources/inp/ww3_ounp.inp does not exists."
 		returnCode=-1
 	fi
 

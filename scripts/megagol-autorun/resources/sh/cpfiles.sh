@@ -14,4 +14,9 @@ function cpinp(){
 }
 function  cpmesh(){
 	cp inputs/mesh/mesh.msh $1/.
+	return $?
+}
+function  cpsh(){
+	cp resources/sh/prnc.sh $1/.
+	return $?
 }

@@ -2,7 +2,7 @@
 # @ account_no = mirmidon
 # @ class = intel
 # @ job_type = mpich
-# @ initialdir = path-to-working-dir
+# @ initialdir = pathtoworkingdir
 # @ node = 28
 # @ node_usage = not_shared
 # @ total_tasks = 196
@@ -23,7 +23,7 @@ module load hpclr-wrapper intel-13.0.1 openmpi-1.6.5-intel
 #export I_MPI_FABRICS=shm:tmi 
 
 ###Others###
-export WORKINGDIR=path-to-working-dir
+export WORKINGDIR=pathtoworkingdir
 export PERNODE=7
 export WWATCH3_NETCDF=NC4
 export NETCDF_CONFIG=/work/mirmidon/softs/intel-13.x-soft/io/netcdf/netcdf-fortran-4.1.3/bin/nc-config

@@ -51,11 +51,13 @@ log $? "Sequence : determined."
 log "raw" "==== STEP1bis: Generic Inputs files availability ===="
 source ./resources/sh/checkgenericinputs.sh
 checkgenericinputs
-log $? "STEP1bis: Generic Inputs checked."
+log $? "Generic Inputs checked."
 
 #2 for each year
 log "raw" "==== STEP2: Computations ===="
 for year in $sequence ; do
+	rightnow
+	log "raw" "==== $year - $d ===="
 	#source format-inp and utilities
 	source ./resources/sh/reformat.sh
 	source ./resources/sh/checkinputs.sh
@@ -63,12 +65,15 @@ for year in $sequence ; do
 
 	isFirstyear=0
 	workdir=$ROOTDIR/$year
+	mkdir -p $ROOTDIR/$year
 	cpexe $workdir
 	log $? "Copy of exe"
 	cpcmd $workdir
 	log $? "Copy of generic cmd"
 	cpinp $workdir
 	log $? "Copy of generic inp"
+	cpsh $workdir
+	log $? "Copy sh files"
 	cpmesh $workdir
 	log $? "Copy mesh file"
 
@@ -83,7 +88,7 @@ for year in $sequence ; do
 		log $? "Cmd files updates"
 		checkinputs $workdir
 		log $? "Ready for submission"
-		#llsubmit resources/pre-processing-firstyear.cmd
+		llsubmit $workdir/pre-processing-firstyear.cmd
 	else
 		#2a-2
 		formatinp $workdir $year $isFirstyear
@@ -92,9 +97,9 @@ for year in $sequence ; do
 		log $? "Cmd files updates"
 		checkinputs $workdir
 		log $? "Ready for submission"
-		#llsubmit resources/pre-processing.cmd
+		llsubmit $workdir/pre-processing.cmd
 	fi 
-	log "raw" "==== STEP2a: $year workdir init ===="
+	log "raw" "==== STEP2a: workdir init ===="
 done
 
 #end

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-function checkgenericinputs(){
+function checkinputs(){
 	WORKINGDIR=$1
 	returnCode=0
 
@@ -69,9 +69,9 @@ function checkgenericinputs(){
 		log "warning" "$WORKINGDIR/ww3_shel.inp does not exists."
 		returnCode=-1
 	fi
-	if [ ! -e $WORKINGDIR/ww3_outp.inp ]
+	if [ ! -e $WORKINGDIR/ww3_ounf.inp ]
 		then
-		log "warning" "$WORKINGDIR/ww3_outp.inp does not exists."
+		log "warning" "$WORKINGDIR/ww3_ounf.inp does not exists."
 		returnCode=-1
 	fi
 	if [ ! -e $WORKINGDIR/ww3_ounp.inp ]
