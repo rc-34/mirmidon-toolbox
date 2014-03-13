@@ -8,8 +8,8 @@ function formatinp(){
 	beg=""$year"0101 000000"
 	end=""$(( $year + 1 ))"0101 000000"
 
-	sed -i '' "s/((begindate))/$beg/g" $WORKDIR/*.inp
-	sed -i '' "s/((enddate))/$end/g" $WORKDIR/*.inp
+	sed -i  "s/((begindate))/$beg/g" $WORKDIR/*.inp
+	sed -i  "s/((enddate))/$end/g" $WORKDIR/*.inp
 
 	restarttimestep="30240000"
 	
@@ -17,7 +17,7 @@ function formatinp(){
 		then
 		#isnot first year
 		begshel=""$(( $year - 1 ))"1216 000000"
-		sed -i '' "s/$beg/$begshel/g" $WORKDIR/ww3_shel.inp
+		sed -i  "s/$beg/$begshel/g" $WORKDIR/ww3_shel.inp
 
 		restarttimestep="31536000"
 	fi
@@ -29,7 +29,7 @@ function formatinp(){
 		restarttimestep=$(( $restarttimestep + 86400))
 	fi
 	#format restart timestep
-	sed -i '' "s/((restarttimestep))/$restarttimestep/g" $WORKDIR/ww3_shel.inp
+	sed -i  "s/((restarttimestep))/$restarttimestep/g" $WORKDIR/ww3_shel.inp
 
 	return $?
 }
@@ -37,7 +37,7 @@ function formatinp(){
 function formatcmd(){
 	WORKDIR=$1
 
-	sed -i '' "s@pathtoworkingdir@$WORKDIR@g" $WORKDIR/*.cmd
+	sed -i  "s@pathtoworkingdir@$WORKDIR@g" $WORKDIR/*.cmd
 	
 	return $?
 }
