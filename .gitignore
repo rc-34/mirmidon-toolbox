@@ -41,3 +41,7 @@ Thumbs.db
 ######
 *.gmtdefaults4
 *.gmtcommands4
+
+# NETCDF FILES #
+################
+*.nc
