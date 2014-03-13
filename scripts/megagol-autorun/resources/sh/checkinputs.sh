@@ -1,4 +1,4 @@
-#!/bin/bash
+cat #!/bin/bash
 
 function checkinputs(){
 	WORKINGDIR=$1
@@ -80,12 +80,12 @@ function checkinputs(){
 		returnCode=-1
 	fi
 
-	if [ $(ls $WORKINGDIR | grep ARPERA*.nc | wc -l) -le 1 ]
+	if [ $(ls $WORKINGDIR | grep ARPERA*.nc | wc -l) -eq 0 ]
 		then
 		log "warning" "No input wind matching ARPERA pattern found"
 		returnCode=-1
 	fi
-	if [ $(ls $WORKINGDIR | grep NM824*.nc | wc -l) -le 1 ]
+	if [ $(ls $WORKINGDIR | grep NM824*.nc | wc -l) -eq 0 ]
 		then
 		log "warning" "No input current matching NM824 pattern found"
 		returnCode=-1
