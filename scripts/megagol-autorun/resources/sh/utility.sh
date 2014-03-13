@@ -45,6 +45,7 @@ function llsubmit(){
   if [ "$RUN" = "local" ] 
     then 
     log "notice" "$1 might be submitted"
+    sleep 2
   elif [ "$RUN" = "hpclr" ] 
     then
     llsubmit $1 > submission-file.txt
@@ -52,6 +53,7 @@ function llsubmit(){
     isNotFinished=1
     while [ $isNotFinished ]
     do
+      sleep 10
       isNotFinished=$(llq -u $USER | grep $jobid | wc -l)
     done
   else
