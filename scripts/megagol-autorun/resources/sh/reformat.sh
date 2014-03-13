@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 function formatinp(){
 	WORKDIR=$1
 	year=$2
@@ -22,6 +21,7 @@ function formatinp(){
 
 		restarttimestep="31536000"
 	fi
+	
 	isLeapYear $year
 	if [ $? = 1 ]
 		then
