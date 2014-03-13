@@ -30,7 +30,7 @@ function cparpera(){
 		#outputs: each variable concatened by years in concat dir
 		ncrcat "inputs/wind/ARPERAREC-"$year".nc" "inputs/wind/ARPERAREC-"$yearm1".nc" $WORKINGDIR/"ARPERAREC-"$year".nc"
 	else
-		cp inputs/wind/ARPERA-$year.nc $1/.
+		cp inputs/wind/ARPERAREC-$year.nc $1/.
 	fi
 	return $?
 }
@@ -44,7 +44,7 @@ function cpnm824(){
 		#outputs: each variable concatened by years in concat dir
 		ncrcat "inputs/currents/NM824REC-"$year".nc" "inputs/currents/NM824REC-"$yearm1".nc" $WORKINGDIR/"NM824REC-"$year".nc"
 	else
-		cp inputs/currents/NM824-$year.nc $1/.
+		cp inputs/currents/NM824REC-$year.nc $1/.
 	fi
 }
 function cprestart(){
