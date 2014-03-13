@@ -38,12 +38,14 @@ outdir=$2
 # Interpolation parameters
 # Must be larger than grid description in ww3_grid.inp
 envelope="-R-7/19/29/47"
+#Xinc=0.03125
+#Yinc=0.03125
 Xinc=0.125
 Yinc=0.125
 
 # nearneighbor sections/mandatory
 #paramN=-N360/20
-paramN=-N4/2
+paramN=-N4/1
 # nearneighbor radius of circle (using Xinc)
 paramS=-S1
 
@@ -86,7 +88,7 @@ for yearlync in $( ls $indir ) ; do
 	esac
 
 	#Prepare mask : 1 to land / Nan to water
-	grdlandmask -V $envelope -Df -I${Xinc}/${Yinc} -N1/NaN -G$workdir/land_mask.grd 
+	#grdlandmask -V $envelope -Df -I${Xinc}/${Yinc} -N1/NaN -G$workdir/land_mask.grd 
 
 	#extract timesteps
 	timesteps=$(ncdump -v time $indir/$yearlync | sed '1,40d' | awk '/[0-9],|[0-9] ;/ { print }' | awk ' {for (i=1; i<=NF; i++) {if ($i ~ /[0-9]/) {print $i}}}' | sed 's/,//g' | sed '1d' )
@@ -117,7 +119,9 @@ for yearlync in $( ls $indir ) ; do
 		rm $workdir/$var-$curtimestep3d.xyz $workdir/$var-temp-$curtimestep3d.xyz
 
 		# apply mask
-		grdmath -V $outdir/$var-$curtimestep3d.grd $workdir/land_mask.grd OR = $outdir/masked_$var-$curtimestep3d.grd
+		#grdmath -V $outdir/$var-$curtimestep3d.grd $workdir/land_mask.grd OR = $outdir/masked_$var-$curtimestep3d.grd
+		## NON MASKED FOR TEST ##
+		cp $outdir/$var-$curtimestep3d.grd $outdir/masked_$var-$curtimestep3d.grd
 		rm $outdir/$var-$curtimestep3d.grd
 
 		# refractor output file

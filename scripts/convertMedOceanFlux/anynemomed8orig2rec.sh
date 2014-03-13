@@ -74,6 +74,6 @@ for year in  $years ; do
 done
 
 echo "STEP5 : clean"
-#rm -Rf $workdir
+rm -Rf $workdir
 
 echo "...That's all folks!"
