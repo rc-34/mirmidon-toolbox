@@ -2,7 +2,7 @@
 #											INFO													  #
 #######################################################################################################
 # Ce script utilise le sous script "arperaorig2rec.sh" dans le but de reformatter l'ensemble de la
-# donnée Atmospherique (= 50 ans de données 1960/1 - 2012) dans des fichiers par année compatibles avec les
+# donnée ARPERA (= 50 ans de données 1960/1 - 2012) dans des fichiers par année compatibles avec les
 # les outils de pre/post processing netcdf conventionnels.
 #######################################################################################################
 

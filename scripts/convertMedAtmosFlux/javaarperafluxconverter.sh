@@ -1,8 +1,8 @@
 #######################################################################################################
 #											INFO													  #
 #######################################################################################################
-# Utilise le programme java pour convertir l'ensemble de la donnée Atmospherique transmise
-# par Hymex/CNRM dans un format compatible GMT.
+# Utilise le programme java pour convertir l'ensemble de la donnée transmise
+# par Florence Sevault (ARPERA) dans un format compatible GMT.
 #######################################################################################################
 
 #!/bin/bash

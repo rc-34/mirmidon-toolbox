@@ -104,7 +104,7 @@ for var in $variables; do
 		join $workdir/longitude $workdir/latitude > temp
 		join temp $workdir/current_flux > joined.xyz
 		rm temp
-		rm current_flux
+		rm $workdir/current_flux
 
 		awk '{ print  $3" "$5" "$7}' joined.xyz > $workdir/$var-$curtimestep3d.xyz
 		rm joined.xyz
