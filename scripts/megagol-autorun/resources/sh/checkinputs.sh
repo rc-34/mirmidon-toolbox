@@ -1,4 +1,4 @@
-cat #!/bin/bash
+#!/bin/bash
 
 function checkinputs(){
 	WORKINGDIR=$1
