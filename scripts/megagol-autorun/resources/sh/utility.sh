@@ -44,28 +44,21 @@ function rightnow(){
 function submitjob(){
   if [ "$RUN" = "local" ] 
     then 
-    log "notice" "$1 might be submitted"
     sleep 2
   elif [ "$RUN" = "hpclr" ] 
     then
-    log "notice" "LoadLeveler $1 going to be submitted"
     #llsubmit $1 > submission-file.txt
     llsubmit $1
     sleep 2
-    log "notice" "$1 submitted"
     #jobid=$(tail -1 submission-file.txt | awk '{print $4}' | sed 's/\"//g')
     jobid=$(llq -u $USER | grep '^io' | tail -1 | awk '{print $1}' )
     log "notice" "jobid = $jobid"
-    isNotFinished=true
-    while [ $isNotFinished ]
+    isNotFinished=1
+    while [ $isNotFinished -eq 1 ]
     do
       sleep 10
       log "notice" "$jobid scrutation"
-      if [ $(llq -u $USER | grep $jobid | wc -l) -eq 0 ]
-        then
-
-        isNotFinished=false
-      fi
+      isNotFinished=$(llq -u $USER | grep $jobid | wc -l)
       echo "llq -u $USER | grep $jobid | wc -l"
     done
   else
