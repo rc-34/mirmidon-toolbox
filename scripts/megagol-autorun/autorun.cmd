@@ -104,7 +104,7 @@ for year in $sequence ; do
 		checkinputs $workdir
 		log $? "Ready for submission"
 		#2c-1
-		llsubmit $workdir/pre-processing-firstyear.cmd
+		submitjob $workdir/pre-processing-firstyear.cmd
 	else
 		#2a-2
 		#2b reformat
@@ -123,7 +123,7 @@ for year in $sequence ; do
 		checkinputs $workdir
 		log $? "Ready for preprocessing submission"
 		#2c-2
-		llsubmit $workdir/pre-processing.cmd
+		submitjob $workdir/pre-processing.cmd
 	fi
 	log $? "Pre-processing job"
 
@@ -131,7 +131,7 @@ for year in $sequence ; do
 	log $? "Ready for shel submission"
 	
 	#2d shel submission
-	llsubmit $workdir/shel.cmd
+	submitjob $workdir/shel.cmd
 	log $? "Shel job"
 
 	#threads for efficiency
@@ -152,7 +152,7 @@ function postprocess() {
 	workdir=$1
 	year=$2
 	#2e post-processing
-	llsubmit $workdir/post-processing.cmd
+	submitjob $workdir/post-processing.cmd
 	log $? "Post-processing-$year"
 
 	#2d move outputs
