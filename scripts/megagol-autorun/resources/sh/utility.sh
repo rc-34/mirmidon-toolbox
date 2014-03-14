@@ -63,9 +63,10 @@ function submitjob(){
       log "notice" "$jobid scrutation"
       if [ $(llq -u $USER | grep $jobid | wc -l) -eq 0 ]
         then
-        echo "llq -u $USER | grep $jobid | wc -l"
+
         isNotFinished=false
       fi
+      echo "llq -u $USER | grep $jobid | wc -l"
     done
   else
     return -1
