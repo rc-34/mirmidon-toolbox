@@ -48,13 +48,18 @@ function llsubmit(){
     sleep 2
   elif [ "$RUN" = "hpclr" ] 
     then
+    log "notice" "$1 going to be submitted"
     llsubmit $1 > submission-file.txt
+    log "notice" "$1 submitted"
     jobid=$(tail -1 submission-file.txt | awk '{print $4}' | sed 's/\"//g')
+    log "notice" "jobid = $jobid"
     isNotFinished=1
     while [ $isNotFinished ]
     do
       sleep 10
+      log "notice" "scrutation"
       isNotFinished=$(llq -u $USER | grep $jobid | wc -l)
+      log "notice" "scrutated"
     done
   else
     return -1
