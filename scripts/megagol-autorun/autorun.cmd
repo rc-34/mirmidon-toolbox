@@ -38,7 +38,7 @@ log "notice" "STARTING... $d"
 
 #1
 log "raw" "==== STEP1: Sequence of years to compute ===="
-if [ $INTEREACTIVE -eq 0 ] 
+if [ $INTERACTIVE -eq 0 ] 
 	then
 	beginningyear=2011
 	endyear=2012
