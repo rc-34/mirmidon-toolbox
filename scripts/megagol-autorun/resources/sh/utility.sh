@@ -48,12 +48,13 @@ function submitjob(){
     sleep 2
   elif [ "$RUN" = "hpclr" ] 
     then
-    log "notice" "$1 going to be submitted"
-    #llsubmit $1 > submission-file.txt
-    llsubmit $1
+    log "notice" "LoadLeveler $1 going to be submitted"
+    llsubmit $1 > submission-file.txt
+    #llsubmit $1
+    sleep 2
     log "notice" "$1 submitted"
-    #jobid=$(tail -1 submission-file.txt | awk '{print $4}' | sed 's/\"//g')
-    jobid=$(llq -u $USER | tail -1 | awk '{print $1}' | sed 's/\"//g' )
+    jobid=$(tail -1 submission-file.txt | awk '{print $4}' | sed 's/\"//g')
+    #jobid=$(llq -u $USER | tail -1 | awk '{print $1}' | sed 's/\"//g' )
     log "notice" "jobid = $jobid"
     isNotFinished=1
     while [ $isNotFinished ]
