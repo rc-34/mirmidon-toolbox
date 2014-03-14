@@ -25,6 +25,7 @@ export USER="chailanr"
 export ROOTDIR="/Users/rchailan/Desktop/OnGoing/mirmidon-toolbox/SCRIPTS/megagol-autorun/work"
 export outdirspec="/Users/rchailan/Desktop/OnGoing/mirmidon-toolbox/SCRIPTS/megagol-autorun/outputs/spec"
 export outdirgridded="/Users/rchailan/Desktop/OnGoing/mirmidon-toolbox/SCRIPTS/megagol-autorun/outputs/gridded"
+export INTERACTIVE=0
 
 #output & error redirection to log
 #exec 2>autorun.err 1>autorun.out
@@ -37,14 +38,19 @@ log "notice" "STARTING... $d"
 
 #1
 log "raw" "==== STEP1: Sequence of years to compute ===="
-if [ $# -ne 2 ]
+if [ $INTEREACTIVE -eq 0 ] 
+	then
+	beginningyear=2011
+	endyear=2012
+elif [ $# -ne 2 ]
 then
 	log "warning" "Usage: ./autorun.cmd BEGINNINGYEAR ENDYEAR"
 	log "warning" "Exemple: ./autorun.cmd 1961 2012"
 	log -1
+else
+	beginningyear=$1
+	endyear=$2
 fi
-beginningyear=$1
-endyear=$2
 sequence=$(seq $beginningyear $endyear)
 log $? "Sequence : determined."
 
