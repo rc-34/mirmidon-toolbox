@@ -54,15 +54,14 @@ function submitjob(){
     sleep 2
     log "notice" "$1 submitted"
     #jobid=$(tail -1 submission-file.txt | awk '{print $4}' | sed 's/\"//g')
-    jobid=$(llq -u $USER | tail -1 | awk '{print $1}' )
+    jobid=$(llq -u $USER | grep '^io' | tail -1 | awk '{print $1}' )
     log "notice" "jobid = $jobid"
     isNotFinished=1
     while [ $isNotFinished ]
     do
       sleep 10
-      log "notice" "scrutation"
+      log "notice" "$jobid scrutation"
       isNotFinished=$(llq -u $USER | grep $jobid | wc -l)
-      log "notice" "scrutated"
     done
   else
     return -1
