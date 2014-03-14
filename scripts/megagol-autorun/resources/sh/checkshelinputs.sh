@@ -12,12 +12,12 @@ function checkshelinputs(){
 	fi
 	if [ ! -e $WORKINGDIR/current.ww3 ]
 		then
-		log "warning" "$WORKINGDIR/wind.ww3 does not exists. Please verify pre-processing (prnc)."
+		log "warning" "$WORKINGDIR/current.ww3 does not exists. Please verify pre-processing (prnc)."
 		returnCode=-1
 	fi
 	if [ ! -e $WORKINGDIR/restart.ww3 ]
 		then
-		log "warning" "$WORKINGDIR/wind.ww3 does not exists. Please verify pre-processing (strt or copy)."
+		log "warning" "$WORKINGDIR/restart.ww3 does not exists. Please verify pre-processing (strt or copy)."
 		returnCode=-1
 	fi
 	if [ ! -e $WORKINGDIR/mod_def.ww3 ]
