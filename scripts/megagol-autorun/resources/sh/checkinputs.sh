@@ -80,12 +80,12 @@ function checkinputs(){
 		returnCode=1
 	fi
 
-	if [ $(ls -l $WORKINGDIR | grep ARPERA | wc -l) -eq 0 ]
+	if [ $(ls -l $WORKINGDIR |grep "ARPERA" | wc -l) -eq 0 ]
 		then
 		log "warning" "No input wind matching ARPERA pattern found"
 		returnCode=1
 	fi
-	if [ $(ls -l $WORKINGDIR | grep NM824 | wc -l) -eq 0 ]
+	if [ $(ls -l $WORKINGDIR |grep "NM824" | wc -l) -eq 0 ]
 		then
 		log "warning" "No input current matching NM824 pattern found"
 		returnCode=1
