@@ -43,7 +43,7 @@ $
 $ Define data files -------------------------------------------------- $
 $ The input line identifies the filename using for the forcing field.
 $
-  'ARPERAREC-2011.nc'
+  'ARPERAREC-((year)).nc'
 $
 $ -------------------------------------------------------------------- $
 $ End of input file                                                    $

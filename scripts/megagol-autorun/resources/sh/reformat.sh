@@ -31,6 +31,10 @@ function formatinp(){
 	#format restart timestep
 	sed -i  "s/((restarttimestep))/$restarttimestep/g" $WORKDIR/ww3_shel.inp
 
+
+	#change path of nc file to import in prnc.inp files
+	sed -i  "s/((year))/$year/g" $WORKDIR/*.inp
+
 	return $?
 }
 
