@@ -29,7 +29,7 @@ $ processed in one pass
  T 100 
 $
 $ Output type ITYPE [0,1,2,3]
- 3
+ 2
 $
 $ Flag for global attributes WW3 [0] or variable version [1-2-3-4]
  0
@@ -70,7 +70,7 @@ $                              3 : Nondimensional pars. (U*)
 $                              4 : Nondimensional pars. (U10)
 $                              5 : 'Validation table'
 $                              6 : WMO standard output 
-$  4
+  5
 $
 $ -------------------------------------------------------------------- $
 $ ITYPE = 3, netCDF Source terms
@@ -90,7 +90,7 @@ $                              1 : Nondimensional in terms of U10
 $                              2 : Nondimensional in terms of U*
 $                             3-5: like 0-2 with f normalized with fp.
 $
-  4  0  0  T T T T T T  0
+$  4  0  0  T T T T T T  0
 $
 $ The transfer file contains records with the following contents.
 $
