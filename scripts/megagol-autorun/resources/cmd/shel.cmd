@@ -3,9 +3,9 @@
 # @ class = intel
 # @ job_type = mpich
 # @ initialdir = pathtoworkingdir
-# @ node = 26
+# @ node = 28
 # @ node_usage = not_shared
-# @ total_tasks = 182
+# @ total_tasks = 196
 # @ wall_clock_limit = 20:00:00,20:00:00
 # @ environment = COPY_ALL
 # @ queue

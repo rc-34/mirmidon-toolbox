@@ -22,7 +22,7 @@
 #RUN may be 'local' or 'hpclr'
 export RUN="local"
 export USER="chailanr"
-export ROOTDIR="/Users/rchailan/Desktop/OnGoing/mirmidon-toolbox/SCRIPTS/megagol-autorun/work"
+export ROOTDIR="/Users/rchailan/Desktop/OnGoing/mirmidon-toolbox/SCRIPTS/megagol-autorun/work2"
 export outdirspec="/Users/rchailan/Desktop/OnGoing/mirmidon-toolbox/SCRIPTS/megagol-autorun/outputs/spec"
 export outdirgridded="/Users/rchailan/Desktop/OnGoing/mirmidon-toolbox/SCRIPTS/megagol-autorun/outputs/gridded"
 export INTERACTIVE=0
@@ -134,10 +134,16 @@ for year in $sequence ; do
 	submitjob $workdir/shel.cmd
 	log $? "Shel job"
 
-	#threads for efficiency
 	#2e post-processing
+	submitjob $workdir/post-processing.cmd
+	log $? "Post-processing-$year"
+
 	#2d move outputs
-	postprocess $workdir $year &
+	mkdir -p $outdirspec/$year
+	mkdir -p $outdirgridded/$year
+	mv $workdir/OUNP*.nc $outdirspec/$year/.
+	mv $workdir/MEDNORD*.nc $outdirgridded/$year/.
+	log $? "move outputs - $year"
 done
 
 #3 clean
@@ -147,18 +153,3 @@ done
 rightnow
 echo "$d => That's all folks !!!"
 
-
-function postprocess() {
-	workdir=$1
-	year=$2
-	#2e post-processing
-	submitjob $workdir/post-processing.cmd
-	log $? "Post-processing-$year"
-
-	#2d move outputs
-	mkdir $outdirspec/$year
-	mkdir $outdirgridded/$year
-	mv $workdir/OUNP*.nc $outdirspec/$year/.
-	mv $workdir/MEDNORD*.nc $outdirgridded/$year/.
-	log $? "move outputs - $year"
-}
