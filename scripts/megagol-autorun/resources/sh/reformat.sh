@@ -16,7 +16,7 @@ function formatinp(){
 	if [ $3 = false ]
 		then
 		#isnot first year
-		begshel=""$(( $year - 1 ))"1216 000000"
+		begshel=""$(( $year - 1 ))"1217 000000"
 		sed -i  "s/$beg/$begshel/g" $WORKDIR/ww3_shel.inp
 
 		restarttimestep="31536000"
