@@ -23,15 +23,17 @@ function  cpsh(){
 function cparpera(){
 	year=$2
 	WORKINGDIR=$1
-	if [ $3 = false ]
-		then
-		#isnot first year
-		yearm1=$(( $year - 1 ))
-		#outputs: each variable concatened by years in concat dir
-		ncrcat "inputs/wind/ARPERAREC-"$year".nc" "inputs/wind/ARPERAREC-"$yearm1".nc" $WORKINGDIR/"ARPERAREC-"$year".nc"
-	else
-		cp inputs/wind/ARPERAREC-$year.nc $1/.
-	fi
+	#ARPERA WIND HAS ALREADY dec-(year-1) anyways
+	# if [ $3 = false ]
+	# 	then
+	# 	#isnot first year
+	# 	yearm1=$(( $year - 1 ))
+	# 	#outputs: each variable concatened by years in concat dir
+	# 	ncrcat "inputs/wind/ARPERAREC-"$year".nc" "inputs/wind/ARPERAREC-"$yearm1".nc" $WORKINGDIR/"ARPERAREC-"$year".nc"
+	# else
+	# 	cp inputs/wind/ARPERAREC-$year.nc $1/.
+	# fi
+	cp inputs/wind/ARPERAREC-$year.nc $1/.
 	return $?
 }
 function cpnm824(){
