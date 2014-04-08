@@ -24,13 +24,14 @@ outdir="outputs"
 ## END PARAMETERS ##
 
 monthsfluxes=$(ls $fluxesdir)
+echo "$monthsfluxes"
+
 
 # 1) foreach month
 # convert monthly data to regular grid
 for monthfluxes in $monthsfluxes; do
 	echo "Preparing to work on $monthfluxes";
-
-	#./arperaorig2rec.sh $1/$monthfluxes
+	./arperaorig2rec.sh $1/$monthfluxes
 
 done ## end foreach months
 
@@ -38,8 +39,8 @@ echo "Appending all months into yearly files"
 
 # 2) foreach year
 # append data in yearly files
-#years=$(printf "%04d " $(seq 1960 2012))
-years="2011 2012"
+years=$(printf "%04d " $(seq 1985 2012))
+#years="2011 2012"
 months=$(printf "%02d " $(seq 1 12))
 #months="09 10 11 12"
 isfirstyear=1

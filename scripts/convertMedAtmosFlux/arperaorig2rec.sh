@@ -84,8 +84,8 @@ grd2xyz -V ${gridfile}?medh.lon > $workdir/longitude
 grd2xyz -V ${gridfile}?medh.lat > $workdir/latitude 
 
 #extract timesteps
-timesteps=$(ncdump -v time $fluxfile | sed '1,40d' | awk '/[0-9],|[0-9] ;/ { print }' | awk ' {for (i=1; i<=NF; i++) {if ($i ~ /[0-9]/) {print $i}}}' | sed 's/,//g' )
-
+#timesteps=$(ncdump -v time $fluxfile | sed '1,40d' | awk '/[0-9],|[0-9] ;/ { print }' | awk ' {for (i=1; i<=NF; i++) {if ($i ~ /[0-9]/) {print $i}}}' | sed 's/,//g' )
+timesteps=$(ncdump -v time $fluxfile | sed '1,13d' | awk '/[0-9],|[0-9] ;/ { print }' | awk ' {for (i=1; i<=NF; i++) {if ($i ~ /[0-9]/) {print $i}}}' | sed 's/,//g' )
 # 2) foreach variable
 for var in $variables; do
 	
@@ -94,6 +94,7 @@ for var in $variables; do
 	#timesteps=0
 	
 	tindex=0
+	
 	for curtimestep in $timesteps; do
 		# trick to print on three digits and avoid time gaps while ncrcatting
 		curtimestep3d=$(printf "%03d" $curtimestep)
