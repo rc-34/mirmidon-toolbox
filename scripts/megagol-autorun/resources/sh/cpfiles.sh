@@ -39,15 +39,18 @@ function cparpera(){
 function cpnm824(){
 	year=$2
 	WORKINGDIR=$1
-	if [ $3 = false ]
-		then
-		#isnot first year
-		yearm1=$(( $year - 1 ))
-		#outputs: each variable concatened by years in concat dir
-		ncrcat "inputs/currents/NM824REC-"$year".nc" "inputs/currents/NM824REC-"$yearm1".nc" $WORKINGDIR/"NM824REC-"$year".nc"
-	else
-		cp inputs/currents/NM824REC-$year.nc $1/.
-	fi
+	#NM824REC HAS ALREADY (year-1) anyways
+	# if [ $3 = false ]
+	# 	then
+	# 	#isnot first year
+	# 	yearm1=$(( $year - 1 ))
+	# 	#outputs: each variable concatened by years in concat dir
+	# 	ncrcat "inputs/currents/NM824REC-"$year".nc" "inputs/currents/NM824REC-"$yearm1".nc" $WORKINGDIR/"NM824REC-"$year".nc"
+	# else
+	# 	cp inputs/currents/NM824REC-$year.nc $1/.
+	# fi
+	cp inputs/currents/NM824REC-$year.nc $1/.
+	return $?
 }
 function cprestart(){
 	year=$2
