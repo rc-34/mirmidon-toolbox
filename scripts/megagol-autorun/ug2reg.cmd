@@ -54,7 +54,7 @@ for year in $sequence ; do
 	cp ../../$interpoldir/ww3_ounf.inp.ug .
 	cp ../../$interpoldir/bathy_ww3_wmed.txt .
 
-	formatinpInterpol $workdir $year
+	formatinpInterpol ./ $year
 	log $? "Format date in .inp files"
 
 	rm mod_def*
