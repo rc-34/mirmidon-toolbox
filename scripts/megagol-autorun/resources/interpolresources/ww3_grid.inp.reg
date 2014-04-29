@@ -1,0 +1,78 @@
+$ -------------------------------------------------------------------- $
+$ WAVEWATCH III Grid preprocessor input file                           $
+$ -------------------------------------------------------------------- $
+  'GOLREG'
+$
+$   1.1  0.04118  25  24  0.
+$   1.1  0.05  30  24 0.
+$   1.1 0.05 32 24 0.
+1.1 0.0345 30 24 0.
+$
+   F T T T T T
+$
+$     100. 50. 50. 6.
+$    200. 100. 100. 8.
+    400. 200. 200. 19.7   
+$    600. 200. 200. 150.                              
+$
+$ Defines ice and subgrid island masking
+$&MISC CICE0 = 0.25, CICEN = 0.75, FLAGTR = 4 /
+$
+$ Input and dissipation with saturation-based dissipation
+$ 
+$TESt405 version corrigée par Fabrice
+&SIN4 BETAMAX = 1.55, ZWND = 6., Z0MAX = 0.0020,   
+TAUWSHELTER = 0.0 /
+&SDS4 SDSC2 = -2.2E-5 , SDSBR = 0.00085, SDSCUM = 0.000, 
+SDSBR = 0.00085, FXFM3= 2.5 /
+&SNL1 NLPROP = 2.7E7 /
+&REF1 REFCOAST=0.01 /
+&UG  UGOBCAUTO =  F,  EXPFSN = T /
+&OUTS US3D  = 1, I1US3D = 1., I2US3D = 30. /
+$
+$
+END OF NAMELISTS
+$
+$
+$ Define grid -------------------------------------------------------- $
+$ 
+$ 
+$
+$    
+$
+$
+   'RECT' T 'NONE'
+   400 200
+   0.025 0.025  1.
+  -1.00 40.00  1.
+  -2 2.5  20  -1. 4 1 '(20f8.2)' 'NAME' 'bathy_ww3_wmed.txt'
+$
+$
+$ 
+$
+$
+      10  2 1 '(....)' 'PART' 'input'
+$      0 0 F
+$      0 0  T
+$
+$  Close list by defining point (0,0) (mandatory)
+$
+      0   0   F
+$
+$ Excluded grid points from segment data ( FROM != PART )
+$   First defined as lines, identical to the definition of the input
+$   boundary points, and closed the same way.
+$
+     0   0   F
+$
+$   Second, define a point in a closed body of sea points to remove
+$   the entire body of sea points. Also close by point (0,0)
+$
+      0   0
+$
+$     2.12  41.30 0.02 0. 207
+$     6.24  41.30 0.   0.02 91
+      0.  0.  0.  0.  0
+$ -------------------------------------------------------------------- $
+$ End of input file                                                    $
+$ -------------------------------------------------------------------- $

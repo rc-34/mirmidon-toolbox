@@ -60,4 +60,17 @@ function isLeapYear (){
  fi
 
 }
+
+
+function formatinpInterpol(){
+	WORKDIR=$1
+	year=$2
+
+	#format begin date
+	beg=""$year"0101 000000"
+
+	sed -i "s/((begindate))/$beg/g" $WORKDIR/*.inp
+
+	return $?
+}
     
