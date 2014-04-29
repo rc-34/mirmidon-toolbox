@@ -69,7 +69,7 @@ function formatinpInterpol(){
 	#format begin date
 	beg=""$year"0101 000000"
 
-	sed -i "s/((begindate))/$beg/g" $WORKDIR/*.inp
+	sed -i "s/((begindate))/$beg/g" $WORKDIR/*.inp*
 
 	return $?
 }
