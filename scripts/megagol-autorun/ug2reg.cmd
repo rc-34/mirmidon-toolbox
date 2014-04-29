@@ -7,11 +7,11 @@
 # # @ queue
 
 # ###ENV###
-# export WORKINGDIR=/scratch/chailanr/mirmidon-toolbox/scripts/megagol-autorun
-# export WWATCH3_NETCDF=NC4
-# export NETCDF_CONFIG=/work/mirmidon/softs/intel-13.x-soft/io/netcdf/netcdf-fortran-4.1.3/bin/nc-config
-# export LD_LIBRARY_PATH=/work/mirmidon/softs/intel-13.x-soft/io/nco/nco-4.4.2/lib:/work/mirmidon/softs/intel-13.x-soft/io/netcdf/netcdf-fortran-4.1.3/lib:$LD_LIBRARY_PATH
-# export PATH=/work/mirmidon/softs/intel-13.x-soft/io/nco/nco-4.4.2/bin:$PATH
+#export WORKINGDIR=/scratch/chailanr/mirmidon-toolbox/scripts/megagol-autorun
+export WWATCH3_NETCDF=NC4
+export NETCDF_CONFIG=/work/mirmidon/softs/intel-13.x-soft/io/netcdf/netcdf-fortran-4.1.3/bin/nc-config
+export LD_LIBRARY_PATH=/work/mirmidon/softs/intel-13.x-soft/io/nco/nco-4.4.2/lib:/work/mirmidon/softs/intel-13.x-soft/io/netcdf/netcdf-fortran-4.1.3/lib:$LD_LIBRARY_PATH
+#export PATH=/work/mirmidon/softs/intel-13.x-soft/io/nco/nco-4.4.2/bin:$PATH
 
 # cd $WORKINGDIR
 
@@ -73,7 +73,7 @@ for year in $sequence ; do
 	mv out_grd.ww3  out_grd.ug
 	log $? "Move grd.ww3 file to grd.ug"
 
-	$interpoldir/ww3_gint > grid.out.interpolate
+	../../$interpoldir/ww3_gint > grid.out.interpolate
 	log $? "Interpolation to reg grid"
 
 	ln -sf ww3_ounf.inp.reg ww3_ounf.inp
