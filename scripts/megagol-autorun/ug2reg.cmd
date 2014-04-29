@@ -34,6 +34,11 @@ interpoldir="resources/interpolresources"
 regoutputsdir="outputs/ounfREG"
 finidir="fini"
 
+if [ ! -d $regoutputsdir ];
+	then
+	mkdir -p $regoutputsdir
+fi
+
 sequence=$(seq $beginningyear $endyear)
 log $? "Sequence : determined."
 
@@ -74,10 +79,10 @@ for year in $sequence ; do
 	ln -sf ww3_ounf.inp.reg ww3_ounf.inp
 	ln -sf mod_def.reg mod_def.ww3
 	ln -sf out_grd.reg out_grd.ww3
-	./ww3_ounf
+	$interpoldir/ww3_ounf
 	log $? "ww3_ounf processing for reg grid"
 
-	mv GOLREG*.nc ../../regoutputsdir/.
+	mv GOLREG*.nc ../../$regoutputsdir/.
 	log $? "Move interpolated nc files"
 
 	ln -sf ww3_ounf.inp.ug ww3_ounf.inp
