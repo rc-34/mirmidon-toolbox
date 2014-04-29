@@ -47,12 +47,12 @@ for year in $sequence ; do
 	cd $workdir
 	log $? "Change to $year directory"
 
-	cp $interpoldir/ww3_gint.inp .
-	cp $interpoldir/ww3_grid.inp.ug .
-	cp $interpoldir/ww3_grid.inp.reg .
-	cp $interpoldir/ww3_ounf.inp.reg .
-	cp $interpoldir/ww3_ounf.inp.ug .
-	cp $interpoldir/bathy_ww3_wmed.txt .
+	cp ../../$interpoldir/ww3_gint.inp .
+	cp ../../$interpoldir/ww3_grid.inp.ug .
+	cp ../../$interpoldir/ww3_grid.inp.reg .
+	cp ../../$interpoldir/ww3_ounf.inp.reg .
+	cp ../../$interpoldir/ww3_ounf.inp.ug .
+	cp ../../$interpoldir/bathy_ww3_wmed.txt .
 
 	formatinpInterpol $workdir $year
 	log $? "Format date in .inp files"
