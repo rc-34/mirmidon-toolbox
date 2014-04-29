@@ -20,7 +20,7 @@ source ./resources/sh/utility.sh
 source ./resources/sh/reformat.sh
 
 rightnow
-log "notice" "STARTING... $d"
+log "notice" "STARTING-interpol... $d"
 
 if [ $# -ne 2 ]
 then
