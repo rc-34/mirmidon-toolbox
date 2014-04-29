@@ -59,12 +59,12 @@ for year in $sequence ; do
 
 	rm mod_def*
 	ln -sf ww3_grid.inp.ug ww3_grid.inp
-	$interpoldir/ww3_grid > grid.out.ug
+	../../$interpoldir/ww3_grid > grid.out.ug
 	log $? "Re-process ug grid with updated ww3_grid binary"
 	mv mod_def.ww3  mod_def.ug
 
 	ln -sf ww3_grid.inp.reg ww3_grid.inp
-	$interpoldir/ww3_grid > grid.out.reg
+	../../$interpoldir/ww3_grid > grid.out.reg
 	log $? "Process reg grid with updated ww3_grid binary"
 	mv mod_def.ww3 mod_def.reg
 
@@ -79,7 +79,7 @@ for year in $sequence ; do
 	ln -sf ww3_ounf.inp.reg ww3_ounf.inp
 	ln -sf mod_def.reg mod_def.ww3
 	ln -sf out_grd.reg out_grd.ww3
-	$interpoldir/ww3_ounf
+	../../$interpoldir/ww3_ounf
 	log $? "ww3_ounf processing for reg grid"
 
 	mv GOLREG*.nc ../../$regoutputsdir/.
