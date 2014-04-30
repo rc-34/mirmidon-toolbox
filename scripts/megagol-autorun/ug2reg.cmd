@@ -52,7 +52,7 @@ for year in $sequence ; do
 	cp ../../$interpoldir/ww3_grid.inp.reg .
 	cp ../../$interpoldir/ww3_ounf.inp.reg .
 	cp ../../$interpoldir/ww3_ounf.inp.ug .
-	cp ../../$interpoldir/bathy_ww3_wmed.txt .
+	cp ../../$interpoldir/bathy_golreg.txt .
 
 	formatinpInterpol ./ $year
 	log $? "Format date in .inp files"
