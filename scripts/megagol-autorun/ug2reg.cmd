@@ -71,7 +71,6 @@ for year in $sequence ; do
 	ln -sf mod_def.ug  mod_def.ww3
 	#qsub -N shel job_shel.pbs
 	mv out_grd.ww3  out_grd.ug
-	log $? "Move grd.ww3 file to grd.ug"
 
 	../../$interpoldir/ww3_gint > grid.out.interpolate
 	log $? "Interpolation to reg grid"
