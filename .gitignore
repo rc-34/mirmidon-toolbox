@@ -44,3 +44,8 @@ Thumbs.db
 # NETCDF FILES #
 ################
 *.nc
+
+# R #
+#####
+*.Rhistory
+*.RData
