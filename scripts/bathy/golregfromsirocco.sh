@@ -4,7 +4,7 @@
 workdir=work
 bathy="sirocco.europe.gmtcompliant.grd"
 regbathygrd="regbathy.grd"
-envelope="-R2/6.80/41.30/43.70"
+envelope="-R2.18/6.80/41.30/43.70"
 #envelope="-R0.6/1/41/42"
 xinc=0.015
 yinx=0.015
