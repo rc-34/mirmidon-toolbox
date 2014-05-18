@@ -27,7 +27,7 @@ fi
 # read sites list
 sites=$( awk '{print $3}' inputs/sites.xy | sed 's/[^0-9]*//g' )
 #for test : 
-sites=$( head inputs/sites.xy | awk '{print $3}'  | sed 's/[^0-9]*//g' )
+#sites=$( head inputs/sites.xy | awk '{print $3}'  | sed 's/[^0-9]*//g' )
 
 # for each year available
 for year in $(ls "$inputs/ounf/") ; do
