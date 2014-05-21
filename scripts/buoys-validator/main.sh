@@ -73,17 +73,41 @@ case $station in
 		;;
 esac
 
+# HS
 nctab2hsvector $infilenc $station $WORKDIR/$station-hs-vector.csv
 log $? "Hs-vector importation"
-
 # join
 echo "date	hs" > $WORKDIR/$station-hs-joined.csv
 paste $WORKDIR/timevector.csv $WORKDIR/$station-hs-vector.csv | column -s '\t' -t >> $WORKDIR/$station-hs-joined.csv
 sed "s/	/,/g" $WORKDIR/$station-hs-joined.csv > $OUTDIR/$station-hs.csv
 log $? "$station-hs.csv edition"
-
 # clean
 rm  $WORKDIR/$station-hs-vector.csv $WORKDIR/$station-hs-joined.csv
+
+
+
+# WND
+nctab2wndvector $infilenc $station $WORKDIR/$station-wnd-vector.csv
+log $? "Wind-vector importation"
+# join
+echo "date	wnd" > $WORKDIR/$station-wnd-joined.csv
+paste $WORKDIR/timevector.csv $WORKDIR/$station-wnd-vector.csv | column -s '\t' -t >> $WORKDIR/$station-wnd-joined.csv
+sed "s/	/,/g" $WORKDIR/$station-wnd-joined.csv > $OUTDIR/$station-wnd.csv
+log $? "$station-wnd.csv edition"
+# clean
+rm  $WORKDIR/$station-wnd-vector.csv $WORKDIR/$station-wnd-joined.csv
+
+# WNDDIR
+nctab2wnddirvector $infilenc $station $WORKDIR/$station-wnddir-vector.csv
+log $? "Winddir-vector importation"
+# join
+echo "date	wnddir" > $WORKDIR/$station-wnddir-joined.csv
+paste $WORKDIR/timevector.csv $WORKDIR/$station-wnddir-vector.csv | column -s '\t' -t >> $WORKDIR/$station-wnddir-joined.csv
+sed "s/	/,/g" $WORKDIR/$station-wnddir-joined.csv > $OUTDIR/$station-wnddir.csv
+log $? "$station-wnd.csv edition"
+# clean
+rm  $WORKDIR/$station-wnddir-vector.csv $WORKDIR/$station-wnddir-joined.csv
+
 
 done # end foreach station
 
