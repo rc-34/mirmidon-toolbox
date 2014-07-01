@@ -43,6 +43,25 @@ function nctab2timevector(){
 }
 
 
+function nctab2timevectorcdo(){
+
+	if [ $# -ne 2 ] 
+		then
+		log "warning" "bad use of nctab2timevector function - missing or too much parameters"
+		return 1
+	fi
+	infilenc=$1
+	outfile=$2
+
+	cdo showtimestamp $1 > t.tmp
+	sed 's|  |\
+|g' t.tmp |sed 's/T/ /g' | sed '1d'  > $outfile
+
+	# clean
+	#rm t.tmp 
+
+}
+
 function nctab2hsvector(){
 	if [ $# -ne 3 ] 
 		then
@@ -55,6 +74,73 @@ function nctab2hsvector(){
 
 	# retrieve column vector hs  from ounp-tab.nc file
 	ncks -s "%f\n" -C -h -d station,$indexstation -v hs $infilenc | tail -n+14 | sed '$d' | sed '$d' > $outfile
+
+	# dimension number of Time - for verification
+	nbtotal=$( ncdump -h $infilenc | grep time | head -1 | sed 's/[^0-9]//g' )
+	if [ $( wc -l $outfile | sed 's/[^0-9]//g' ) -ne $nbtotal ] 
+		then
+		log "warning" "issue while comparing initial time dimension with the created vector file"
+		return 1
+	fi
+}
+
+function nctab2hsdirvector(){
+	if [ $# -ne 3 ] 
+		then
+		log "warning" "bad use of nctab2hsdirvector function - missing or too much parameters"
+		return 1
+	fi
+	infilenc=$1
+	outfile=$3
+	station=$2
+
+	# retrieve column vector hsdir  from ounp-tab.nc file
+	ncks -s "%f\n" -C -h -d station,$indexstation -v th1m $infilenc | tail -n+13 | sed '$d' | sed '$d' > $outfile
+
+	# dimension number of Time - for verification
+	nbtotal=$( ncdump -h $infilenc | grep time | head -1 | sed 's/[^0-9]//g' )
+	if [ $( wc -l $outfile | sed 's/[^0-9]//g' ) -ne $nbtotal ] 
+		then
+		log "warning" "issue while comparing initial time dimension with the created vector file"
+		return 1
+	fi
+}
+
+
+function nctab2hsdirpeakvector(){
+	if [ $# -ne 3 ] 
+		then
+		log "warning" "bad use of nctab2hsdirpeakvector function - missing or too much parameters"
+		return 1
+	fi
+	infilenc=$1
+	outfile=$3
+	station=$2
+
+	# retrieve column vector hsdir  from ounp-tab.nc file
+	ncks -s "%f\n" -C -h -d station,$indexstation -v th1p $infilenc | tail -n+14 | sed '$d' | sed '$d' > $outfile
+
+	# dimension number of Time - for verification
+	nbtotal=$( ncdump -h $infilenc | grep time | head -1 | sed 's/[^0-9]//g' )
+	if [ $( wc -l $outfile | sed 's/[^0-9]//g' ) -ne $nbtotal ] 
+		then
+		log "warning" "issue while comparing initial time dimension with the created vector file"
+		return 1
+	fi
+}
+
+function nctab2fpvector(){
+	if [ $# -ne 3 ] 
+		then
+		log "warning" "bad use of nctab2hsdirpeakvector function - missing or too much parameters"
+		return 1
+	fi
+	infilenc=$1
+	outfile=$3
+	station=$2
+
+	# retrieve column vector hsdir  from ounp-tab.nc file
+	ncks -s "%f\n" -C -h -d station,$indexstation -v fp $infilenc | tail -n+14 | sed '$d' | sed '$d' > $outfile
 
 	# dimension number of Time - for verification
 	nbtotal=$( ncdump -h $infilenc | grep time | head -1 | sed 's/[^0-9]//g' )
