@@ -1,0 +1,1 @@
+This script allows the user to plot the bathymetry + the grid point of the unstructured grid from a wavewatchIII unstructured-gridded output (ounf with ug grid)
