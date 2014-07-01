@@ -21,7 +21,9 @@ gmt gmtset FORMAT_FLOAT_OUT %8.8f
 
 bathy="inputs/sirocco.europe.grd"
 envelope="-R2.18/6.80/41.30/43.70" #envelope considered
-outfile="work/lhs"
+envelope="-R3/5/42.25/43.60" #envelope considered
+outfile="work/Selected-1level"
+outfile="lhs"
 work=work
 palette="inputs/shallow-water.cpt"
 png_resolution=600
@@ -42,8 +44,8 @@ png_resolution=600
 gmt	grdimage $bathy $projection $envelope -C$palette -P -K -V > ${outfile}.ps
 log $? "grdimage"
 
-# gmt	grdcontour $bathy $envelope -S -J -C50 -A500+gwhite+f4 -Wcthinnest,black,solid -Wathinner,black,solid -P -O -K >> ${outfile}.ps
-# log $? "grdcontour"
+gmt	grdcontour $bathy $envelope -S -J -C50 -A500+gwhite+f4 -Wcthinnest,black,solid -Wathinner,black,solid -P -O -K >> ${outfile}.ps
+log $? "grdcontour"
 
 gmt pscoast -V $projection $envelope -Df -G#d9bb7a -Cwhite -N1/0.2p,#0000FF,solid -P -K -O >> ${outfile}.ps
 log $? "pscoast"
@@ -56,7 +58,7 @@ log $? "pscoast"
 
 
 #plot all points layer per layer
-# gmt psxy -V $work/nodes-0.xyz -W0.1p,red -Gred -Sp0.02 $projection $envelope -P -K -O >> ${outfile}.ps
+# gmt psxy -V $work/nodes-0.xyz -W0.6p,red -Gred -S+0.1  $projection $envelope -P -K -O >> ${outfile}.ps
 # log $? "psxy-red"
 # gmt psxy -V $work/nodes-1.xyz -W0.1p,blue -Gblue -S+0.06 $projection $envelope -P -K -O >> ${outfile}.ps
 # log $? "psxy-blue"
@@ -68,8 +70,8 @@ log $? "pscoast"
 # log $? "psxy-pink"
 
 #plot lhs layer per layer
-# gmt psxy -V $work/lhs-0.xy -W0.1p,red -Gred -Sp0.06 $projection $envelope -P -K -O >> ${outfile}.ps
-# log $? "psxy-red"
+gmt psxy -V $work/lhs-0.xy -W0.6p,blue -Gblue -S+0.2 $projection $envelope -P -K -O >> ${outfile}.ps
+log $? "psxy-red"
 # gmt psxy -V $work/lhs-1.xy -W0.4p,blue -Gblue -S+0.10 $projection $envelope -P -K -O >> ${outfile}.ps
 # log $? "psxy-blue"
 # gmt psxy -V $work/lhs-2.xy -W0.4p,orange -Gorange -Sa0.10 $projection $envelope -P -K -O >> ${outfile}.ps
@@ -79,23 +81,28 @@ log $? "pscoast"
 # gmt psxy -V $work/lhs-4.xy -W0.8p,purple -Gpurple -Si0.12 $projection $envelope -P -K -O >> ${outfile}.ps
 # log $? "psxy-pink"
 
-#plot sites-selected layer per layer
-gmt psxy -V $work/sites-0.xy -W0.1p,red -Gred -Sp0.06 $projection $envelope -P -K -O >> ${outfile}.ps
-log $? "psxy-red"
-gmt psxy -V $work/sites-1.xy -W0.4p,blue -Gblue -S+0.10 $projection $envelope -P -K -O >> ${outfile}.ps
-log $? "psxy-blue"
-gmt psxy -V $work/sites-2.xy -W0.4p,orange -Gorange -Sa0.10 $projection $envelope -P -K -O >> ${outfile}.ps
-log $? "psxy-orange"
-gmt psxy -V $work/sites-3.xy -W0.4p,brown -Gbrown -Sd0.10 $projection $envelope -P -K -O >> ${outfile}.ps
-log $? "psxy-brown"
-gmt psxy -V $work/sites-4.xy -W0.8p,purple -Gpurple -Si0.12 $projection $envelope -P -K -O >> ${outfile}.ps
-log $? "psxy-pink"
+# #plot sites-selected layer per layer
+# gmt psxy -V $work/sites-0.xy -W0.6p,purple -Gpurple -S+0.2 $projection $envelope -P -K -O >> ${outfile}.ps
+# gmt psxy -V $work/sites-v2.xyz -W0.6p,purple -Gpurple -S+0.2 $projection $envelope -P -K -O >> ${outfile}.ps
+# log $? "psxy-red"
+# gmt psxy -V $work/sites-1.xy -W0.4p,blue -Gblue -S+0.10 $projection $envelope -P -K -O >> ${outfile}.ps
+# log $? "psxy-blue"
+# gmt psxy -V $work/sites-2.xy -W0.4p,orange -Gorange -Sa0.10 $projection $envelope -P -K -O >> ${outfile}.ps
+# log $? "psxy-orange"
+# gmt psxy -V $work/sites-3.xy -W0.4p,brown -Gbrown -Sd0.10 $projection $envelope -P -K -O >> ${outfile}.ps
+# log $? "psxy-brown"
+# gmt psxy -V $work/sites-4.xy -W0.8p,purple -Gpurple -Si0.12 $projection $envelope -P -K -O >> ${outfile}.ps
+# log $? "psxy-pink"
 
-gmt	psbasemap $envelope $projection -Bf0.5a1:longitude:/f0.25a0.5:latitude:/:."Bathymetry(m) - Gulf of Lions ":WeSn -P -O -K >> ${outfile}.ps
+# gmt psxy -V outputs/sites.xy -W0.1p,red -Gred -Sp0.06 $projection $envelope -P -K -O >> ${outfile}.ps
+# log $? "psxy-red"
+
+gmt	psbasemap $envelope $projection -Bf0.5a1:longitude:/f0.25a0.5:latitude:/:."100 Sites from Latin Hyper Cube Sampling ":WeSn -P -O  >> ${outfile}.ps
+# gmt	psbasemap $envelope $projection -Bf0.5a1:longitude:/f0.25a0.5:latitude:/:."Computation Grid points ":WeSn -P -O -K >> ${outfile}.ps
 log $? "psbasemap"
 
-gmt	psscale -D21/6.5/13.5/0.3 -C$palette -B500:"":/:"": -E -O  >> ${outfile}.ps
-log $? "psscale"
+# gmt	psscale -D21/6.5/13.5/0.3 -C$palette -B500:"":/:"": -E -O  >> ${outfile}.ps
+# log $? "psscale"
 
 gmt ps2raster -E$png_resolution -A -Tg -P ${outfile}.ps
 log $? "psraster"

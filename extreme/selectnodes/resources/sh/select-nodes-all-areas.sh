@@ -25,30 +25,50 @@ function selectnodes(){
 	done
 	log $? "nodes per section selection"
 
-	longmin[0]=3.
-	longmax[0]=5.25
-	latmin[0]=42.25
-	latmax[0]=43.5
+	# longmin[0]=3.
+	# longmax[0]=5.25
+	# latmin[0]=42.25
+	# latmax[0]=43.5
 
-	longmin[1]=3.
-	longmax[1]=5.5
-	latmin[1]=42.
-	latmax[1]=43.40
+	# longmin[1]=3.
+	# longmax[1]=5.5
+	# latmin[1]=42.
+	# latmax[1]=43.40
 
-	longmin[2]=3.
-	longmax[2]=6
-	latmin[2]=41.75
-	latmax[2]=43.25
+	# longmin[2]=3.
+	# longmax[2]=6
+	# latmin[2]=41.75
+	# latmax[2]=43.25
 
-	longmin[3]=3.
-	longmax[3]=6.80
-	latmin[3]=41.30
-	latmax[3]=43.15
+	# longmin[3]=3.
+	# longmax[3]=6.80
+	# latmin[3]=41.30
+	# latmax[3]=43.15
 
-	longmin[4]=3.
-	longmax[4]=6.80
-	latmin[4]=41.30
-	latmax[4]=43.
+	# longmin[0]=3.
+	# longmax[0]=5.25
+	# latmin[0]=42.25
+	# latmax[0]=43.5
+
+	# longmin[1]=3.
+	# longmax[1]=5.5
+	# latmin[1]=42.
+	# latmax[1]=43.40
+
+	# longmin[2]=3.
+	# longmax[2]=6
+	# latmin[2]=41.75
+	# latmax[2]=43.25
+
+	# longmin[3]=3.
+	# longmax[3]=6.80
+	# latmin[3]=41.30
+	# latmax[3]=43.15
+
+	# longmin[4]=3.
+	# longmax[4]=6.80
+	# latmin[4]=41.30
+	# latmax[4]=43.
 
 	# for each section
 	for i in $(seq 0 $(($k-1))); do
@@ -57,15 +77,16 @@ function selectnodes(){
 		echo $nbtoselect
 		
 		# get min and max from the subset
-		# lonmin=$(gmt gmtinfo $work/nodes-$i.xyz | awk '{ print $5 }' | sed 's/>//' |sed 's/<//' | awk 'BEGIN {FS = "/"} {print $1} ')
-		# lonmax=$(gmt gmtinfo $work/nodes-$i.xyz | awk '{ print $5 }' | sed 's/>//' |sed 's/<//' | awk 'BEGIN {FS = "/"} {print $2} ')
+		lonmin=$(gmt gmtinfo $work/nodes-$i.xyz | awk '{ print $5 }' | sed 's/>//' |sed 's/<//' | awk 'BEGIN {FS = "/"} {print $1} ')
+		lonmax=$(gmt gmtinfo $work/nodes-$i.xyz | awk '{ print $5 }' | sed 's/>//' |sed 's/<//' | awk 'BEGIN {FS = "/"} {print $2} ')
 
-		# latmin=$(gmt gmtinfo $work/nodes-$i.xyz | awk '{ print $6 }' | sed 's/>//' |sed 's/<//' | awk 'BEGIN {FS = "/"} {print $1} ')
-		# latmax=$(gmt gmtinfo $work/nodes-$i.xyz | awk '{ print $6 }' | sed 's/>//' |sed 's/<//' | awk 'BEGIN {FS = "/"} {print $2} ')
-		lonmin=${longmin[$i]}
-		lonmax=${longmax[$i]}
-		latmin=${latmin[$i]}
-		latmax=${latmax[$i]}
+		latmin=$(gmt gmtinfo $work/nodes-$i.xyz | awk '{ print $6 }' | sed 's/>//' |sed 's/<//' | awk 'BEGIN {FS = "/"} {print $1} ')
+		latmax=$(gmt gmtinfo $work/nodes-$i.xyz | awk '{ print $6 }' | sed 's/>//' |sed 's/<//' | awk 'BEGIN {FS = "/"} {print $2} ')
+		
+		# lonmin=${longmin[$i]}
+		# lonmax=${longmax[$i]}
+		# latmin=${latmin[$i]}
+		# latmax=${latmax[$i]}
 
 		# generate a lhs
 		Rscript resources/R/lhs.R $nbtoselect $lonmin $lonmax $latmin $latmax | sed '1d' > $work/lhs-$i.txt
@@ -82,17 +103,17 @@ function selectnodes(){
 			Rscript resources/R/nearest.R $work/nodes-$i.xyz $line >> $work/lhs-Rprojeted-$i.xy
 		done < $work/lhs-$i.xy
 
-		cat $work/lhs-Rprojeted-$i.xy |sed 's/\"//g' | awk '{print $2"	"$3"	"$4}' > $work/lhs-projeted-$i.xy
-		sort -u $work/lhs-projeted-$i.xy > $work/sites-$i.xy
+		cat $work/lhs-Rprojeted-$i.xy |sed 's/\"//g' | awk '{print $2"	"$3"	"$4"	"$5}' > $work/lhs-projeted-$i.xyz
+		sort -u $work/lhs-projeted-$i.xyz > $work/sites-$i.xyz
 
 	done
 
 	# finally collect all chosennode in one file
-	if [ -f $work/sites.xy ] ; then
-		rm $work/sites.xy
+	if [ -f $outputs/sites.xy ] ; then
+		rm $outputs/sites.xyz
 	fi
 	for i in $(seq 0 $(($k-1))); do
-		cat $work/sites-$i.xy >> $outputs/sites.xy
+		cat $work/sites-$i.xyz >> $outputs/sites.xyz
 	done
 
 }

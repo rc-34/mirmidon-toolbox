@@ -25,9 +25,9 @@ if [ ! -d $work ] ; then
 fi
 
 # read sites list
-sites=$( awk '{print $3}' inputs/sites.xy | sed 's/[^0-9]*//g' )
+#sites=$( awk '{print $3}' inputs/sites.xy | sed 's/[^0-9]*//g' )
 #for test : 
-#sites=$( head inputs/sites.xy | awk '{print $3}'  | sed 's/[^0-9]*//g' )
+sites=$( head -20 inputs/sites.xy | awk '{print $3}'  | sed 's/[^0-9]*//g' )
 
 # for each year available
 for year in $(ls "$inputs/ounf/") ; do
@@ -58,16 +58,17 @@ for year in $(ls "$inputs/ounf/") ; do
 	if [ ! -d $outputs/$year ] ; then
 		mkdir $outputs/$year
 	fi
-	for site in $sites ; do
-		if [ ! -d $outputs/$year/$site ] ; then
-			mkdir $outputs/$year/$site
+done
+
+final=2012
+for site in $sites ; do
+		if [ ! -d $outputs/$final/$site ] ; then
+			mkdir $outputs/$final/$site
 		fi
 
-		cat $work/*-$var-$site >> $work/$year-$var-$site.tmp
-		sort -u $work/$year-$var-$site.tmp > $outputs/$year/$site/$year-$var-$site.dat
+		cat $work/*-$var-$site >> $work/$final-$var-$site.tmp
+		sort -u $work/$final-$var-$site.tmp > $outputs/$final/$site/$final-$var-$site.dat
 		log $? "sort $var file"
-
-	done
 done
 
 rightnow

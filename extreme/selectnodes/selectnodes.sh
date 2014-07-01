@@ -10,9 +10,10 @@ rightnow
 log "notice" "Start... $d"
 
 ## PARAMETERS ##
-k=5 #number of levels in z axis
+k=1 #number of levels in z axis
 envelope="-R2.18/6.80/41.30/43.70" #envelope considered
-initsitesnb=125
+envelope="-R3/5/42.25/43.60" #envelope considered
+initsitesnb=100
 incsites=$((initsitesnb/$k))
 
 work="work"
@@ -33,8 +34,8 @@ nodefile="inputs/nodes.xyz"
 source ./resources/sh/select-nodes-all-areas.sh
 selectnodes $nodefile k
 
-# #plot
-# source ./resources/sh/plot-selected-nodes.sh
+#plot
+source ./resources/sh/plot-selected-nodes.sh
 
 
 rightnow

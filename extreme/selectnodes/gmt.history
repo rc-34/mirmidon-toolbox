@@ -1,8 +1,8 @@
 # GMT 5 Session common arguments shelf
 BEGIN GMT 5.1.1
-B	500::/::
+B	f0.5a1:longitude:/f0.25a0.5:latitude:/:.100 Sites from Latin Hyper Cube Sampling :WeSn
 J	M
 JM	M20c
-R	2.18/6.80/41.30/43.70
-L	9
+R	3/5/42.25/43.60
+L	5
 END
