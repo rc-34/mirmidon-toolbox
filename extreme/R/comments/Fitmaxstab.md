@@ -1,6 +1,7 @@
 # SANS GEV SPATIAL #
 
-1. SMITH 
+1. SMITH
+
 ## FIT d'un Smith sur la donnee non transformee. ##
     smith<-fitmaxstab(data,locations, cov.mod="gauss",fit.marge=TRUE)
 ==> Tourne en rond puis erreur de session.
@@ -35,6 +36,7 @@
 ==> Le modele converge bien. Les standard errors ne peuvent pas etre calculees mais c est normal.
 
 2. SCHLATHER
+
 ## FIT d'un Schalther sur la donnee non transformee. ##
    > schlather<-fitmaxstab(data,locations, cov.mod="whitmat",fit.marge=TRUE)
 > Tourne en rond puis erreur de session.
