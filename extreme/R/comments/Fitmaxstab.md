@@ -325,7 +325,25 @@ J'ai essaye de faire du profiling pour voir ou est ce que le calcul se ralentiss
     "mode"               0.02     0.10       0.02      0.10
     "sys.parent"         0.02     0.10       0.02      0.10
 
-On voit bien que le modèle passe du temps dans la fonction ecrite en .C. Nous n avons pas la main dessus.
+    $by.total
+                    total.time total.pct self.time self.pct
+    "fitmaxstab"         44.40    100.00      0.00     0.00
+    "smithfull"          44.40    100.00      0.00     0.00
+    ".C"                 39.46     88.87     39.46    88.87
+    "nplk"               38.06     85.72      0.02     0.05
+    "fn"                 37.98     85.54      0.02     0.05
+    ".External2"         37.98     85.54      0.00     0.00
+    "<Anonymous>"        37.98     85.54      0.00     0.00
+    "optim"              37.98     85.54      0.00     0.00
+    "fitcovmat"           6.04     13.60      0.00     0.00
+    "fitextcoeff"         6.00     13.51      0.18     0.41
+    "apply"               4.42      9.95      1.30     2.93
+    "FUN"                 1.82      4.10      1.18     2.66
+    "unlist"              1.10      2.48      1.10     2.48
+    "match.arg"           0.46      1.04      0.06     0.14
+    [...]
+
+On voit bien que le calcul passe du temps dans la fonction ecrite en .C. Nous n avons pas la main dessus.
 
 ## Avec l estimation des parametres de dependance uniquement, marge transformee par ailleurs, avec donnee max annuelle ##
     > Rprof("example.prof")
@@ -370,9 +388,12 @@ On voit bien que le modèle passe du temps dans la fonction ecrite en .C. Nous n
 Nous avons le meme comportement. Nous pouvons note que la fonction .C est appellée par nplk visiblement.
 
 N.B. On peut avoir de beaux schemas de profiling par :
+
     require(profr)
     require(ggplot2)
     x = profr(smithfrech<-fitmaxstab(datafrech,locations, cov.mod="gauss",fit.marge=FALSE))
     ggplot(x
+
 ou
+
     plotProfileCallGraph(readProfileData("example.prof"),score = "total")
