@@ -1,11 +1,13 @@
+#!/bin/bash
 #######################################################################################################
 #											INFO													  #
 #######################################################################################################
 # Utilise le programme java pour convertir l'ensemble de la donnée transmise
 # par Florence Sevault (ARPERA) dans un format compatible GMT.
 #######################################################################################################
-
-#!/bin/bash
+source ./resources/sh/utility.sh
+rightnow
+log "notice" "STARTING... $d"
 
 if [ $# -ne 2 ] 
 	then
@@ -35,7 +37,7 @@ for originfile in $originfiles; do
 
 	# call java converter
 	java -jar $jar $gmtcompliantdir/$gmtcompliantfile $gridfile $lon $lat $origindir/$originfile $variables
-	
+	log $? "Convert $orginfile"
 done ##end foreach original file
 
 
