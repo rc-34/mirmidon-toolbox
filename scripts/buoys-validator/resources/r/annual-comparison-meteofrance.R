@@ -1,13 +1,12 @@
 require(ggplot2)
 require(reshape2)
-source(file="ww3nctab2df.R")
+# source(file="ww3nctab2df.R")
 has2print=FALSE
-#has2print=TRUE
 
 buoy<-"MeteoFrance"
-year<-"2002"
-start<-"2002-02-01 00:00:00"
-end<-"2002-12-31 00:00:00"
+year<-"2012"
+start<-"2012-01-01 00:00:00"
+end<-"2012-02-01 00:00:00"
 
 #Declare Stations
 stations=c("MeteoFranc")
@@ -18,10 +17,6 @@ for(station in stations) {
   modeldf<-read.csv(paste("../../outputs/",station,"-hs.csv",sep=""),header=TRUE,col.names=c("date","hs"))
   modeldf['date']<-as.POSIXct(modeldf$date,tz="GMT",format='%Y-%m-%d %H:%M:%S')
   modeldf['hs']<-as.numeric(modeldf$hs)
-  
-  # READING FROM NC_FILE (only for 2011)
-  #modeldf<-ww3nctab2df("../../inputs/model/OUNP-MEDNORD-2010_tab.nc")
-  #modeldf<-data.frame(date=modeldf$date,hs=modeldf$hs.meteofranc)
   
   #MEASURE PART
   #SOLTC SRC
@@ -40,9 +35,9 @@ for(station in stations) {
 #   measuredf.full['tmoy']<-as.numeric(as.character(measuredf.full$tmoy))
 #   measuredf.full['consolidated']<-as.character(measuredf.full$consolidated)
 #   
-#   measuredf<-data.frame(date=measuredf.full$date,hs=measuredf.full$hs)
-#   #measuredf<-measuredf[measuredf$date > as.POSIXct("2011-10-01 00:00:00",tz="GMT") & measuredf$date < as.POSIXct("2011-10-10 00:00:00",tz="GMT"),]
-#   
+  measuredf<-data.frame(date=measuredf.full$date,hs=measuredf.full$hs)
+  #measuredf<-measuredf[measuredf$date > as.POSIXct("2011-10-01 00:00:00",tz="GMT") & measuredf$date < as.POSIXct("2011-10-10 00:00:00",tz="GMT"),]
+  
   #HYMEX SRC  
   measuredf<-read.csv(paste("../../inputs/GOL-buoy-hymex/Lion_HS_",year,".dat",sep=""),sep=";",header=TRUE,col.names=c("date","hs"))
   measuredf['date']<-as.POSIXct(measuredf$date,tz="Etc/GMT-12",format='%Y-%m-%d %H:%M:%S')

@@ -58,7 +58,7 @@ function nctab2timevectorcdo(){
 |g' t.tmp |sed 's/T/ /g' | sed '1d'  > $outfile
 
 	# clean
-	#rm t.tmp 
+	rm t.tmp 
 
 }
 
@@ -73,7 +73,7 @@ function nctab2hsvector(){
 	station=$2
 
 	# retrieve column vector hs  from ounp-tab.nc file
-	ncks -s "%f\n" -C -h -d station,$indexstation -v hs $infilenc | tail -n+14 | sed '$d' | sed '$d' > $outfile
+    ncks -s "%f\n" -C -h -d station,$indexstation -v hs $infilenc | tail -n+14 | sed '$d' | sed '$d' > $outfile
 
 	# dimension number of Time - for verification
 	nbtotal=$( ncdump -h $infilenc | grep time | head -1 | sed 's/[^0-9]//g' )

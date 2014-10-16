@@ -1,21 +1,22 @@
 require(ggplot2)
 require(reshape2)
 
+has2print<-TRUE
 
 year<-"2011"
-start<-"2011-09-01 00:00:00"
-#start<-"2011-01-01 00:00:00"
+# start<-"2011-09-01 00:00:00"
+start<-"2011-01-01 00:00:00"
 end<-"2011-12-31 23:00:00"
 #end<-"2011-09-20 23:00:00"
 
 stations=c("Espiguette")
 file="CANDHIS_export_pem_03001_Base"
-stations=c("Sete")
-file="CANDHIS_export_pem_03404_Base"
-stations=c("Leucate")
-file="CANDHIS_export_pem_01101_Base"
-stations=c("Banyuls")
-file="CANDHIS_export_pem_06601_Base"
+# stations=c("Sete")
+# file="CANDHIS_export_pem_03404_Base"
+# stations=c("Leucate")
+# file="CANDHIS_export_pem_01101_Base"
+# stations=c("Banyuls")
+# file="CANDHIS_export_pem_06601_Base"
 # stations=c("CAMARGUE")
 # file="CANDHIS_export_pem_01301_Base"
 # stations=c("MARSEILLE")
@@ -69,7 +70,7 @@ for(station in stations) {
   df<-rbind(df.mod,df.obs)
   
   ## PAS TERRIBLE ##
-  df<-df[df$value!=0.00 & df$value!=Inf,]
+#   df<-df[df$value!=0.00 & df$value!=Inf,]
   
   # Change levelnames
   levels(df$variable) <- c("Hs(m)","PeakPeriod(s)","Dir(Deg)","MeanDir(Deg)")
@@ -86,6 +87,22 @@ for(station in stations) {
     labs(title=paste("Buoy: ",station, " | Year: ", year,sep="")) 
   
   print(ggplot)
+
+  #QQPLOT
+  d<- as.data.frame(qqplot(measuredf$hs, modeldf$hs, plot.it=FALSE))
+  colnames(d)[1]<-'modeled'
+  colnames(d)[2]<-'observed'
+  qqp<- ggplot(d) + 
+  theme(panel.background = element_rect(fill="white"))+
+  geom_point(aes(x=sort(d$modeled), y=sort(d$observed))) +
+  geom_abline(slope=1,aes(colour="line")) +
+  xlab("Hs(m) model") + 
+  ylab("Hs(m) observation") +
+  labs(title=paste("QQplot - ",station, " (",year,")",sep=""))+
+  if (has2print) {
+    ggsave(paste("~/Desktop/",year,"-qqpoint-",station,".png",sep=""),width=8,height=6)
+  }
+
 }
 
 
@@ -150,24 +167,9 @@ for(station in stations) {
 #     ggsave(paste("~/Desktop/",year,"-ppoint-",station,".png",sep=""),width=8,height=6)
 #   }
 #   
-#   #QQPLOT
-#   d<- as.data.frame(qqplot(df.mix$hs.modeled, df.mix$hs.measured, plot.it=FALSE))
-#   #d<- rename(d, c("x"="modeled", "y"="observed"))
-#   colnames(d)[1]<-'modeled'
-#   colnames(d)[2]<-'observed'
-#   qqp<- ggplot(d) + 
-#     theme(panel.background = element_rect(fill="white"))+
-#     geom_point(aes(x=sort(d$modeled), y=sort(d$observed))) +
-#     geom_abline(slope=1,aes(colour="line")) +
-#     xlab("Hs(m) model") + 
-#     ylab("Hs(m) observation") +
-#     labs(title=paste("QQplot - ",buoy, " (",year,")",sep=""))+
-#     if (has2print) {
-#       ggsave(paste("~/Desktop/",year,"-qqpoint-",station,".png",sep=""),width=8,height=6)
-#     }
-#   
-#   #d<-data.frame(modeled=df.mix$hs.modeled, observed=df.mix$hs.measured)
-#   #qqp<-ggplot(d,aes(sample=d$observed))+stat_qq()
+  
+  #d<-data.frame(modeled=df.mix$hs.modeled, observed=df.mix$hs.measured)
+  #qqp<-ggplot(d,aes(sample=d$observed))+stat_qq()
 #   
 #   #SCATTERPLOT
 #   d<-data.frame(modeled=df.mix$hs.modeled, observed=df.mix$hs.measured)
