@@ -73,7 +73,7 @@ function nctab2hsvector(){
 	station=$2
 
 	# retrieve column vector hs  from ounp-tab.nc file
-    ncks -s "%f\n" -C -h -d station,$indexstation -v hs $infilenc | tail -n+14 | sed '$d' | sed '$d' > $outfile
+    ncks -s "%f\n" -C -h -d station,$(($indexstation-1)) -v hs $infilenc | tail -n+14 | sed '$d' | sed '$d' > $outfile
 
 	# dimension number of Time - for verification
 	nbtotal=$( ncdump -h $infilenc | grep time | head -1 | sed 's/[^0-9]//g' )
@@ -95,7 +95,7 @@ function nctab2hsdirvector(){
 	station=$2
 
 	# retrieve column vector hsdir  from ounp-tab.nc file
-	ncks -s "%f\n" -C -h -d station,$indexstation -v th1m $infilenc | tail -n+13 | sed '$d' | sed '$d' > $outfile
+	ncks -s "%f\n" -C -h -d station,$(($indexstation-1)) -v th1m $infilenc | tail -n+13 | sed '$d' | sed '$d' > $outfile
 
 	# dimension number of Time - for verification
 	nbtotal=$( ncdump -h $infilenc | grep time | head -1 | sed 's/[^0-9]//g' )
@@ -118,7 +118,7 @@ function nctab2hsdirpeakvector(){
 	station=$2
 
 	# retrieve column vector hsdir  from ounp-tab.nc file
-	ncks -s "%f\n" -C -h -d station,$indexstation -v th1p $infilenc | tail -n+14 | sed '$d' | sed '$d' > $outfile
+	ncks -s "%f\n" -C -h -d station,$(($indexstation-1)) -v th1p $infilenc | tail -n+14 | sed '$d' | sed '$d' > $outfile
 
 	# dimension number of Time - for verification
 	nbtotal=$( ncdump -h $infilenc | grep time | head -1 | sed 's/[^0-9]//g' )
@@ -140,7 +140,7 @@ function nctab2fpvector(){
 	station=$2
 
 	# retrieve column vector hsdir  from ounp-tab.nc file
-	ncks -s "%f\n" -C -h -d station,$indexstation -v fp $infilenc | tail -n+14 | sed '$d' | sed '$d' > $outfile
+	ncks -s "%f\n" -C -h -d station,$(($indexstation-1)) -v fp $infilenc | tail -n+14 | sed '$d' | sed '$d' > $outfile
 
 	# dimension number of Time - for verification
 	nbtotal=$( ncdump -h $infilenc | grep time | head -1 | sed 's/[^0-9]//g' )
@@ -162,7 +162,7 @@ function nctab2wndvector(){
 	station=$2
 
 	# retrieve column vector wnd  from ounp-tab.nc file
-	ncks -s "%f\n" -C -h -d station,$indexstation -v wnd $infilenc | tail -n+14 | sed '$d' | sed '$d' > $outfile
+	ncks -s "%f\n" -C -h -d station,$(($indexstation-1)) -v wnd $infilenc | tail -n+14 | sed '$d' | sed '$d' > $outfile
 
 	# dimension number of Time - for verification
 	nbtotal=$( ncdump -h $infilenc | grep time | head -1 | sed 's/[^0-9]//g' )
@@ -184,7 +184,7 @@ function nctab2wnddirvector(){
 	station=$2
 
 	# retrieve column vector wnddir  from ounp-tab.nc file
-	ncks -s "%f\n" -C -h -d station,$indexstation -v wnddir $infilenc | tail -n+14 | sed '$d' | sed '$d' > $outfile
+	ncks -s "%f\n" -C -h -d station,$(($indexstation-1)) -v wnddir $infilenc | tail -n+14 | sed '$d' | sed '$d' > $outfile
 
 	# dimension number of Time - for verification
 	nbtotal=$( ncdump -h $infilenc | grep time | head -1 | sed 's/[^0-9]//g' )

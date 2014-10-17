@@ -5,7 +5,7 @@ has2print=FALSE
 buoy<-"MeteoFrance"
 year<-"2012"
 start<-"2012-01-01 18:00:00"
-end<-"2012-01-31 00:00:00"
+end<-"2012-12-31 00:00:00"
 
 #Declare Stations
 stations=c("MeteoFranc")
@@ -14,7 +14,7 @@ stations=c("MeteoFranc")
 for(station in stations) {
   #MODEL PART
   modeldf<-read.csv(paste("../../outputs/",station,"-wnd.csv",sep=""),header=TRUE,col.names=c("date","wnd"))
-  modeldf['date']<-as.POSIXct(modeldf$date,tz="Etc/GMT+12",format='%Y-%m-%d %H:%M:%S')
+  modeldf['date']<-as.POSIXct(modeldf$date,tz="UTC",format='%Y-%m-%d %H:%M:%S')
   modeldf['wnd']<-as.numeric(modeldf$wnd)
   modeldf['wnd']<-as.numeric(modeldf$wnd)*3.6 #convert to km/h
   
@@ -42,21 +42,66 @@ for(station in stations) {
   df.mix<-merge(modeldf,measuredf,by='date',all.x=TRUE,suffixes=c(".ww3",".buoy"))
   df.mix<-df.mix[df.mix$date > as.POSIXct(start,tz="GMT") & df.mix$date < as.POSIXct(end,tz="GMT"),]
 
-  #ARPERA PART
   if (year %in% "2012") {
-    arperadf<-read.csv("../../outputs/arpera-wnd.csv",header=TRUE,col.names=c("date","wnd"))
+    #ARPERA PART
+    arperadf<-read.csv("../../outputs/arpera-wnd-674.csv",header=TRUE,col.names=c("date","wnd"))
     arperadf['date']<-as.POSIXct(arperadf$date,tz="UTC",format='%Y-%m-%d %H:%M:%S')
     arperadf['wnd']<-as.numeric(arperadf$wnd)
     arperadf['wnd']<-as.numeric(arperadf$wnd)*3.6 #convert to km/h
-    arperadf<-arperadf[arperadf$date > as.POSIXct(start,tz="UTC") & arperadf$date < as.POSIXct(end,tz="UTC"),]
+    arperadf.674<-arperadf[arperadf$date > as.POSIXct(start,tz="UTC") & arperadf$date < as.POSIXct(end,tz="UTC"),]
+    #ARPERA PART
+    arperadf<-read.csv("../../outputs/arpera-wnd-675.csv",header=TRUE,col.names=c("date","wnd"))
+    arperadf['date']<-as.POSIXct(arperadf$date,tz="UTC",format='%Y-%m-%d %H:%M:%S')
+    arperadf['wnd']<-as.numeric(arperadf$wnd)
+    arperadf['wnd']<-as.numeric(arperadf$wnd)*3.6 #convert to km/h
+    arperadf.675<-arperadf[arperadf$date > as.POSIXct(start,tz="UTC") & arperadf$date < as.POSIXct(end,tz="UTC"),]
+    #ARPERA PART
+    arperadf<-read.csv("../../outputs/arpera-wnd-772.csv",header=TRUE,col.names=c("date","wnd"))
+    arperadf['date']<-as.POSIXct(arperadf$date,tz="UTC",format='%Y-%m-%d %H:%M:%S')
+    arperadf['wnd']<-as.numeric(arperadf$wnd)
+    arperadf['wnd']<-as.numeric(arperadf$wnd)*3.6 #convert to km/h
+    arperadf.772<-arperadf[arperadf$date > as.POSIXct(start,tz="UTC") & arperadf$date < as.POSIXct(end,tz="UTC"),]
+    #ARPERA PART
+    arperadf<-read.csv("../../outputs/arpera-wnd-673.csv",header=TRUE,col.names=c("date","wnd"))
+    arperadf['date']<-as.POSIXct(arperadf$date,tz="UTC",format='%Y-%m-%d %H:%M:%S')
+    arperadf['wnd']<-as.numeric(arperadf$wnd)
+    arperadf['wnd']<-as.numeric(arperadf$wnd)*3.6 #convert to km/h
+    arperadf.673<-arperadf[arperadf$date > as.POSIXct(start,tz="UTC") & arperadf$date < as.POSIXct(end,tz="UTC"),]
+    #ARPERA PART
+    arperadf<-read.csv("../../outputs/arpera-wnd-771.csv",header=TRUE,col.names=c("date","wnd"))
+    arperadf['date']<-as.POSIXct(arperadf$date,tz="UTC",format='%Y-%m-%d %H:%M:%S')
+    arperadf['wnd']<-as.numeric(arperadf$wnd)
+    arperadf['wnd']<-as.numeric(arperadf$wnd)*3.6 #convert to km/h
+    arperadf.771<-arperadf[arperadf$date > as.POSIXct(start,tz="UTC") & arperadf$date < as.POSIXct(end,tz="UTC"),]
+    #ARPERA PART
+    arperadf<-read.csv("../../outputs/arpera-wnd-770.csv",header=TRUE,col.names=c("date","wnd"))
+    arperadf['date']<-as.POSIXct(arperadf$date,tz="UTC",format='%Y-%m-%d %H:%M:%S')
+    arperadf['wnd']<-as.numeric(arperadf$wnd)
+    arperadf['wnd']<-as.numeric(arperadf$wnd)*3.6 #convert to km/h
+    arperadf.770<-arperadf[arperadf$date > as.POSIXct(start,tz="UTC") & arperadf$date < as.POSIXct(end,tz="UTC"),]
+    
+    #ARPERA-REC PART
+    arperadfrec<-read.csv("../../outputs/arperarec-wnd.csv",header=TRUE,col.names=c("date","wnd"))
+    arperadfrec['date']<-as.POSIXct(arperadfrec$date,tz="UTC",format='%Y-%m-%d %H:%M:%S')
+    arperadfrec['wnd']<-as.numeric(arperadfrec$wnd)
+    arperadfrec['wnd']<-as.numeric(arperadfrec$wnd)*3.6 #convert to km/h
+    arperadfrec<-arperadfrec[arperadfrec$date > as.POSIXct(start,tz="UTC") & arperadfrec$date < as.POSIXct(end,tz="UTC"),]
     
     #PLOT
     pline<-ggplot(df.mix, aes(date)) + 
-      geom_line(data=arperadf,aes(x=date,y = wnd,colour="arpera"),alpha=1,size=0.7,linetype="dashed")+
+#       geom_line(data=arperadf.673,aes(x=date,y = wnd,colour="arpera.673"),alpha=1,size=0.7,linetype="dashed")+
+      geom_line(data=arperadf.674,aes(x=date,y = wnd,colour="arpera.674"),alpha=1,size=0.7,linetype="dashed")+
+#       geom_line(data=arperadf.675,aes(x=date,y = wnd,colour="arpera.675"),alpha=1,size=0.7,linetype="dashed")+
+#       geom_line(data=arperadf.770,aes(x=date,y = wnd,colour="arpera.770"),alpha=1,size=0.7,linetype="dashed")+
+#       geom_line(data=arperadf.771,aes(x=date,y = wnd,colour="arpera.771"),alpha=1,size=0.7,linetype="dashed")+
+#       geom_line(data=arperadf.772,aes(x=date,y = wnd,colour="arpera.772"),alpha=1,size=0.7,linetype="dashed")+
+      geom_line(data=arperadfrec,aes(x=date,y = wnd,colour="arperarec"),alpha=1,size=0.7,linetype="dashed")+
       geom_line(aes(y = wnd.buoy,colour="buoy"),alpha=1,size=0.5)+
       geom_line(aes(y = wnd.ww3,colour="ww3"),alpha=1/2,size=0.5)+
-      scale_colour_manual("", breaks = c("arpera","buoy", "ww3"),
-                          values = c("green","lightgrey", "blue")) +
+      scale_colour_manual("", breaks = c("arpera.674","arperarec","buoy", "ww3"),
+                          values = c("green","purple","lightgrey", "blue")) +
+#       scale_colour_manual("", breaks = c("arpera.673","arpera.674","arpera.675","arpera.770","arpera.771","arpera.772","arperarec","buoy", "ww3"),
+#                       values = c("pink","green","brown","yellow","black","red","purple","lightgrey", "blue")) +
       theme(panel.background = element_rect(fill="white"))+
       ylab("WND (Km/H)") +
       xlab(paste("Time (Year ",year,")",sep=""))+
