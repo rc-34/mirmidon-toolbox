@@ -13,12 +13,12 @@
 #
 # La sortie du script sont des fichiers netcdf NM824-YYYY.nc où YYYY est l\'annee physique traitee.
 ######################################################################################################
+source ./resources/sh/utility.sh
 
 #!/bin/bash
-
 if [ $# -ne 3 ] 
 	then
-	echo "Usage: nemomed8orig2rec <path-to-inputs-dir> <path-to-outputs-dir> <year-of-inputs-fields>"
+	log $? "Usage: nemomed8orig2rec <path-to-inputs-dir> <path-to-outputs-dir> <year-of-inputs-fields>"
 	exit 1
 fi
 
@@ -38,16 +38,13 @@ outdir=$2
 # Interpolation parameters
 # Must be larger than grid description in ww3_grid.inp
 envelope="-R-7/19/29/47"
-#Xinc=0.03125
-#Yinc=0.03125
 Xinc=0.125
 Yinc=0.125
 
 # nearneighbor sections/mandatory
-#paramN=-N360/20
-paramN=-N4/1
+paramN=-N6/1
 # nearneighbor radius of circle (using Xinc)
-paramS=-S1
+paramS=-S0.5
 
 
 if [ ! -d $outdir ]
@@ -67,66 +64,67 @@ for yearlync in $( ls $indir ) ; do
 	# select file and variable to work on
 	var=""
 	 
-	echo "a) ---- long/lat extractions ----"
+	log "notice" "a) ---- long/lat extractions ----"
 	# extract lon/lat
-	grd2xyz -V $indir/$yearlync?$lon > $workdir/longitude
-	grd2xyz -V $indir/$yearlync?$lat > $workdir/latitude
+	gmt grd2xyz $indir/$yearlync?$lon > $workdir/longitude
+	log $? "Extract Longitude"
+	gmt grd2xyz $indir/$yearlync?$lat > $workdir/latitude
+	log $? "Extract Latitude"
 
 	case "$yearlync" in
 	"$sstfile")
-		echo "b) ---- sst regriding ----"
+		log "notice" "b) ---- sst regriding ----"
 		var="sosstsst"
 		;;
 	"$vomecrtyfile")
-		echo "b) ---- vomecrty regriding ----"
+		log "notice" "b) ---- vomecrty regriding ----"
 		var="vomecrty"
 		;;
 	"$vozocrtxfile")
-		echo "b) ---- vozocrtx regriding ----"
+		log "notice" "b) ---- vozocrtx regriding ----"
 		var="vozocrtx"
 		;;
 	esac
 
-	#Prepare mask : 1 to land / Nan to water
-	#grdlandmask -V $envelope -Df -I${Xinc}/${Yinc} -N1/NaN -G$workdir/land_mask.grd 
+	# Prepare mask : 1 to land / Nan to water
+	gmt grdlandmask $envelope -Df -I${Xinc}/${Yinc} -N1/NaN -G$workdir/land_mask.grd 
 
 	#extract timesteps
 	timesteps=$(ncdump -v time $indir/$yearlync | sed '1,40d' | awk '/[0-9],|[0-9] ;/ { print }' | awk ' {for (i=1; i<=NF; i++) {if ($i ~ /[0-9]/) {print $i}}}' | sed 's/,//g' | sed '1d' )
+	log $? "Timesteps extraction"
 
-	#echo "debug mode please press [enter] -> only one timestep treated by var-file.nc"
-	#read
-	#timesteps=43200
+	# log "warning" "debug mode please press [enter] -> only one timestep treated by var-file.nc"
+	# timesteps=43200
+
 	tindex=0
 	for curtimestep in $timesteps; do
 		# trick to print on three digits and avoid time gaps while ncrcatting
 		curtimestep3d=$(printf "%03d" $(( ($curtimestep - 43200) / 86400 )))
-		#curtimestep3D is the day number after the origin date: xx/xx/xx 12:00:00
+		# curtimestep3D is the day number after the origin date: xx/xx/xx 12:00:00
 
-		grd2xyz -V $indir/$yearlync?$var[$tindex] > $workdir/current_flux
-		join $workdir/longitude $workdir/latitude > $workdir/temp
-		join $workdir/temp $workdir/current_flux > $workdir/joined.xyz
-		rm $workdir/temp
-		rm $workdir/current_flux
+		gmt grd2xyz $indir/$yearlync?$var[$tindex] > $workdir/current_flux
+		log $? "extract $var[$index]"
+		paste $workdir/longitude $workdir/latitude > $workdir/lonlat
+		paste $workdir/lonlat $workdir/current_flux > $workdir/joined.xyz
+		log $? "Join data in xyz file"
 
-		awk '{ print  $3" "$5" "$7}' $workdir/joined.xyz > $workdir/$var-temp-$curtimestep3d.xyz
-		#awk '{ print  $3" "$5" "$7}' $workdir/joined.xyz > $workdir/$var-$curtimestep3d.xyz
-		rm $workdir/joined.xyz
+		awk '{ print  $3" "$6" "$9}' $workdir/joined.xyz > $workdir/$var-temp-$curtimestep3d.xyz
+		# rm $workdir/joined.xyz
 
-		#interpolation
-		#before interpolating, set land data to NAN to not be included into shoreline interpolation
+		# before interpolating, set land data to NAN to not be included into shoreline interpolation
 		awk '{ if($3!=0) {print $1"	"$2"	"$3}; }' $workdir/$var-temp-$curtimestep3d.xyz > $workdir/$var-$curtimestep3d.xyz
-		nearneighbor -V $workdir/$var-$curtimestep3d.xyz $envelope -I${Xinc}/${Yinc} $paramN $paramS -G$outdir/$var-$curtimestep3d.grd
-		rm $workdir/$var-$curtimestep3d.xyz $workdir/$var-temp-$curtimestep3d.xyz
-
+		gmt nearneighbor $workdir/$var-$curtimestep3d.xyz $envelope -I${Xinc}/${Yinc} $paramN $paramS -G$outdir/$var-$curtimestep3d.grd
+		log $? "Interpolation"
+		
 		# apply mask
-		#grdmath -V $outdir/$var-$curtimestep3d.grd $workdir/land_mask.grd OR = $outdir/masked_$var-$curtimestep3d.grd
-		## NON MASKED FOR TEST ##
-		cp $outdir/$var-$curtimestep3d.grd $outdir/masked_$var-$curtimestep3d.grd
-		rm $outdir/$var-$curtimestep3d.grd
-
-		# refractor output file
-		ncrename -h -v x,longitude -v y,latitude -v z,$var $outdir/masked_$var-$curtimestep3d.grd
-
+		gmt grdmath $outdir/$var-$curtimestep3d.grd $workdir/land_mask.grd OR = $outdir/masked_$var-$curtimestep3d.grd
+		#mv $outdir/$var-$curtimestep3d.grd $outdir/masked_$var-$curtimestep3d.grd
+		log $? "Mask"
+		
+		# refractor var
+		# ncrename -h -d x,longitude -d y,latitude -v x,longitude -v y,latitude -v z,$var $outdir/masked_$var-$curtimestep3d.grd
+		ncrename -h -d lon,longitude -d lat,latitude -v lon,longitude -v lat,latitude -v z,$var $outdir/masked_$var-$curtimestep3d.grd
+		log $? "ncrename dim&vars"
 		ncatted -h -O -a long_name,longitude,d,f," " $outdir/masked_$var-$curtimestep3d.grd
 		ncatted -h -a long_name,longitude,c,c,"longitude"  $outdir/masked_$var-$curtimestep3d.grd
 		ncatted -h -a units,longitude,c,c,"degrees_east" $outdir/masked_$var-$curtimestep3d.grd
@@ -136,8 +134,6 @@ for yearlync in $( ls $indir ) ; do
 		ncatted -h -a long_name,latitude,c,c,"latitude"  $outdir/masked_$var-$curtimestep3d.grd
 		ncatted -h -a units,latitude,c,c,"degrees_north"  $outdir/masked_$var-$curtimestep3d.grd
 		ncatted -h -a axis,latitude,c,c,"Y"  $outdir/masked_$var-$curtimestep3d.grd
-		
-		ncrename -h -d x,longitude -d y,latitude $outdir/masked_$var-$curtimestep3d.grd
 		
 		#add variable time and set time with current time step
 		ncap -h -O -s "time=$tindex" $outdir/masked_$var-$curtimestep3d.grd $outdir/masked_$var-$curtimestep3d.grd
@@ -157,10 +153,13 @@ for yearlync in $( ls $indir ) ; do
 		ncks -h -A $workdir/templonlat.nc $outdir/masked_$var-$curtimestep3d.grd
 
 		tindex=$(( $tindex +1 ))
-		
+		# log "warning" "on debug should. uncomment here"
+		rm $workdir/lonlat $workdir/current_flux $workdir/$var-$curtimestep3d.xyz $outdir/$var-$curtimestep3d.grd
 	done ##end foreach timestep
 
-ncrcat $outdir/masked_$var*.grd $outdir/$var-$outfile
+ncrcat -O $outdir/masked_$var*.grd $outdir/$var-$outfile
+log $? "NCRCAT grdfiles"
+# log "warning" "on debug should. uncomment here"
 rm $outdir/*.grd
 
 unit=""
