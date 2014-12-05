@@ -194,7 +194,7 @@ $     1:NOSWLL are first NOSWLL swell fields.
 $
 N
 WND CUR HS LM  T01 HIG DIR FP EF UST CHA TAW WCH SXY  TWO BHD FOC USS P2S P2L MSS
-$HS WND CUR DIR FP SPR EF
+$
 $----------------------------------------------------------------
 $
 $ Type 2 : Point output

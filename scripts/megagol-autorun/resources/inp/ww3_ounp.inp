@@ -16,7 +16,7 @@ $ 2
  -1
 $
 $ file prefix
- OUNP-MEDNORD-
+ MEGAGOL2015a-OUNP-
 $
 $ number of characters in date
  4
@@ -70,7 +70,7 @@ $                              3 : Nondimensional pars. (U*)
 $                              4 : Nondimensional pars. (U10)
 $                              5 : 'Validation table'
 $                              6 : WMO standard output 
-  5
+  2
 $
 $ -------------------------------------------------------------------- $
 $ ITYPE = 3, netCDF Source terms
