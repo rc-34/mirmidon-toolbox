@@ -20,11 +20,11 @@
 #############################################################################################
 
 #RUN may be 'local' or 'hpclr'
-export RUN="local"
+export RUN="hpclr"
 export USER="chailanr"
-export ROOTDIR="/Users/rchailan/Desktop/OnGoing/mirmidon-toolbox/SCRIPTS/megagol-autorun/work2"
-export outdirspec="/Users/rchailan/Desktop/OnGoing/mirmidon-toolbox/SCRIPTS/megagol-autorun/outputs/spec"
-export outdirgridded="/Users/rchailan/Desktop/OnGoing/mirmidon-toolbox/SCRIPTS/megagol-autorun/outputs/gridded"
+export ROOTDIR="/gpfs2/scratch/chailanr/mirmidon-toolbox/scripts/megagol-autorun/work"
+export outdirspec="/gpfs2/scratch/chailanr/mirmidon-toolbox/scripts/megagol-autorun/outputs/spec"
+export outdirgridded="/gpfs2/scratch/chailanr/mirmidon-toolbox/scripts/megagol-autorun/outputs/gridded"
 export INTERACTIVE=0
 
 #output & error redirection to log
@@ -40,7 +40,7 @@ log "notice" "STARTING... $d"
 log "raw" "==== STEP1: Sequence of years to compute ===="
 if [ $INTERACTIVE -eq 0 ] 
 	then
-	beginningyear=2011
+	beginningyear=1961
 	endyear=2012
 elif [ $# -ne 2 ]
 then
@@ -147,7 +147,7 @@ for year in $sequence ; do
 done
 
 #3 clean
-#rm -Rf work/*
+rm -Rf work/*
 
 #end
 rightnow
