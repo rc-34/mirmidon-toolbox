@@ -41,6 +41,20 @@ function rightnow(){
     d=$(date '+%Y-%m-%d %H:%M:%S')
 }
 
+function postprocess(){
+  #2e post-processing
+  submitjob $workdir/post-processing.cmd
+  log $? "Post-processing-$1"
+
+  #2d move outputs
+  mkdir -p $outdirspec/$1
+  mkdir -p $outdirgridded/$1
+  mv $workdir/OUNP*.nc $outdirspec/$1/.
+  mv $workdir/MEDNORD*.nc $outdirgridded/$1/.
+  log $? "move outputs - $1"
+
+}
+
 function submitjob(){
   if [ "$RUN" = "local" ] 
     then 

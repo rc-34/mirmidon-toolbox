@@ -23,7 +23,7 @@
 export RUN="hpclr"
 export USER="chailanr"
 export ROOTDIR="/gpfs2/scratch/chailanr/mirmidon-toolbox/scripts/megagol-autorun/work"
-export outdirspec="/gpfs2/scratch/chailanr/mirmidon-toolbox/scripts/megagol-autorun/outputs/spec"
+export outdirspec="/gpfs2/scratch/chailanr/mirmidon-toolbox/scripts/megagol-autorun/outputs/ounp"
 export outdirgridded="/gpfs2/scratch/chailanr/mirmidon-toolbox/scripts/megagol-autorun/outputs/gridded"
 export INTERACTIVE=0
 
@@ -134,16 +134,18 @@ for year in $sequence ; do
 	submitjob $workdir/shel.cmd
 	log $? "Shel job"
 
-	#2e post-processing
-	submitjob $workdir/post-processing.cmd
-	log $? "Post-processing-$year"
+	# post-processing
+	postprocess $year &
+	# #2e post-processing
+	# submitjob $workdir/post-processing.cmd
+	# log $? "Post-processing-$year"
 
-	#2d move outputs
-	mkdir -p $outdirspec/$year
-	mkdir -p $outdirgridded/$year
-	mv $workdir/OUNP*.nc $outdirspec/$year/.
-	mv $workdir/MEDNORD*.nc $outdirgridded/$year/.
-	log $? "move outputs - $year"
+	# #2d move outputs
+	# mkdir -p $outdirspec/$year
+	# mkdir -p $outdirgridded/$year
+	# mv $workdir/OUNP*.nc $outdirspec/$year/.
+	# mv $workdir/MEDNORD*.nc $outdirgridded/$year/.
+	# log $? "move outputs - $year"
 done
 
 #3 clean
