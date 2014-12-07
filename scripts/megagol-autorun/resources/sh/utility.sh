@@ -56,7 +56,7 @@ function submitjob(){
     isNotFinished=1
     while [ $isNotFinished -eq 1 ]
     do
-      sleep 10
+      sleep 60
       #log "notice" "$jobid Idle or Running"
       isNotFinished=$(llq -u $USER | grep $jobid | wc -l)
     done
