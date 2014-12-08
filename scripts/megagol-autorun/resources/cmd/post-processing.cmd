@@ -2,7 +2,7 @@
 # @ account_no = mirmidon
 # @ class = intel
 # @ job_type = serial
-# @ wall_clock_limit = 05:00:00,4:50:00
+# @ wall_clock_limit = 10:00:00,9:50:00
 # @ environment = COPY_ALL
 # @ queue
 
