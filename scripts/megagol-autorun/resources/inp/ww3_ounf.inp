@@ -11,7 +11,7 @@ $ file for a full documentation of field output options. Namelist type
 $ selection is used here (for alternative F/T flags, see ww3_shel.inp).
 $
   N
-  WND CUR HS LM  T01 HIG DIR FP EF UST CHA TAW WCH SXY  TWO BHD FOC USS P2S P2L
+  WND CUR HS LM  T02 T01 HIG DIR FP EF UST CHA TAW WCH SXY  TWO BHD FOC USS P2S P2L
 $  HS FP CUR WND SPR
 $
 $--------------------------------------------------------------------- $

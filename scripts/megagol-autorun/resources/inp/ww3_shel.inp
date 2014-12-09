@@ -193,7 +193,7 @@ $     Section 4 consist of a set of fields, index 0 = wind sea, index
 $     1:NOSWLL are first NOSWLL swell fields.
 $
 N
-WND CUR HS LM  T01 HIG DIR FP EF UST CHA TAW WCH SXY  TWO BHD FOC USS P2S P2L MSS
+WND CUR HS LM  T02 T01 HIG DIR FP EF UST CHA TAW WCH SXY  TWO BHD FOC USS P2S P2L MSS
 $
 $----------------------------------------------------------------
 $
