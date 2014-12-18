@@ -49,8 +49,8 @@ function postprocess(){
   #2d move outputs
   mkdir -p $outdirspec/$1
   mkdir -p $outdirgridded/$1
-  mv $workdir/OUNP*.nc $outdirspec/$1/.
-  mv $workdir/MEDNORD*.nc $outdirgridded/$1/.
+  mv $workdir/*-OUNP*.nc $outdirspec/$1/.
+  mv $workdir/*-OUNF*.nc $outdirgridded/$1/.
   log $? "move outputs - $1"
 
 }

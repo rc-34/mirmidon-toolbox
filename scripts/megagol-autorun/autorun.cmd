@@ -149,8 +149,8 @@ for year in $sequence ; do
 	# log $? "move outputs - $year"
 done
 
-#3 clean
-rm -Rf work/*
+#3 NO CLEAN clean
+#rm -Rf work/*
 
 #end
 rightnow
