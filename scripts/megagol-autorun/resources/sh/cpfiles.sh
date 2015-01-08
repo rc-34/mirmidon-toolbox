@@ -56,7 +56,7 @@ function cprestart(){
 	year=$2
 	WORKINGDIR=$1
 	yearm1=$(( $year - 1 ))
-	mv $WORKINGDIR/../$yearm1/restart001.ww3 $WORKINGDIR/restart.ww3
+	cp $WORKINGDIR/../$yearm1/restart001.ww3 $WORKINGDIR/restart.ww3
 	
 	return $?
 }

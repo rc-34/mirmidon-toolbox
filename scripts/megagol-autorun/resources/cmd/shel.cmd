@@ -3,9 +3,9 @@
 # @ class = intel
 # @ job_type = mpich
 # @ initialdir = pathtoworkingdir
-# @ node = 28
+# @ node = 30
 # @ node_usage = not_shared
-# @ total_tasks = 196
+# @ total_tasks = 240
 # @ wall_clock_limit = 20:00:00,20:00:00
 # @ environment = COPY_ALL
 # @ queue
@@ -24,7 +24,7 @@ module load hpclr-wrapper intel-13.0.1 openmpi-1.6.5-intel
 
 ###Others###
 export WORKINGDIR=pathtoworkingdir
-export PERNODE=7
+export PERNODE=8
 export WWATCH3_NETCDF=NC4
 export NETCDF_CONFIG=/work/mirmidon/softs/intel-13.x-soft/io/netcdf/netcdf-fortran-4.1.3/bin/nc-config
 export LD_LIBRARY_PATH=/work/mirmidon/softs/intel-13.x-soft/io/netcdf/netcdf-fortran-4.1.3/lib:$LD_LIBRARY_PATH
