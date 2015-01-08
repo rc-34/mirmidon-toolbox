@@ -41,7 +41,7 @@ log "raw" "==== STEP1: Sequence of years to compute ===="
 if [ $INTERACTIVE -eq 0 ] 
 	then
 	beginningyear=1961
-	restartyear=1977
+	restartyear=1991
 	endyear=2012
 elif [ $# -ne 2 ]
 then
