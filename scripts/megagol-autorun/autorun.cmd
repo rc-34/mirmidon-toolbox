@@ -22,9 +22,9 @@
 #RUN may be 'local' or 'hpclr'
 export RUN="hpclr"
 export USER="chailanr"
-export ROOTDIR="/gpfs2/scratch/chailanr/megagol2015-a/mirmidon-toolbox/scripts/megagol-autorun/work"
-export outdirspec="/gpfs2/scratch/chailanr/megagol2015-a/mirmidon-toolbox/scripts/megagol-autorun/outputs/ounp"
-export outdirgridded="/gpfs2/scratch/chailanr/megagol2015-a/mirmidon-toolbox/scripts/megagol-autorun/outputs/gridded"
+export ROOTDIR="/gpfs2/scratch/chailanr/mirmidon-toolbox/scripts/megagol-autorun/work"
+export outdirspec="/gpfs2/scratch/chailanr/mirmidon-toolbox/scripts/megagol-autorun/outputs/ounp"
+export outdirgridded="/gpfs2/scratch/chailanr/mirmidon-toolbox/scripts/megagol-autorun/outputs/gridded"
 export INTERACTIVE=0
 
 #output & error redirection to log
@@ -40,8 +40,8 @@ log "notice" "STARTING... $d"
 log "raw" "==== STEP1: Sequence of years to compute ===="
 if [ $INTERACTIVE -eq 0 ] 
 	then
-	beginningyear=1961
-	restartyear=1961
+	beginningyear=1990
+	restartyear=1990
 	endyear=2012
 elif [ $# -ne 2 ]
 then
