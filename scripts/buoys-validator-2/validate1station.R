@@ -2,6 +2,10 @@ source("readOunp2df.R")
 source("readLionHymex.R")
 source("readCandhis.R")
 source("resources/r/Multiplot.R")
+source("resources/r/ComparisonStats.R")
+
+cbbPalette <- c("lightgrey", "green","black", "blue", "green", "purple" ,"red")
+cbbPalette2 <- c( "green", "purple", "blue", "red")
 
 #-- Main Function --# validate 1 station / all variables available
 validate1station <- function (station,year,candhisdir,hymexdir,ounpdir,plot = TRUE,
@@ -23,14 +27,24 @@ validate1station <- function (station,year,candhisdir,hymexdir,ounpdir,plot = TR
   
   # Gather data in one dataframe
   df<-merge(df.obs,df.model,by="date",all.y = TRUE)
-  if (station != "61002") 
+  df.stats<-merge(df.obs,df.model,by="date")
+  
+  if (station != "61002") {
     colnames(df)<- c('date','obs.hs','obs.tp','obs.th1p','obs.th1m','model.hs','model.lm','model.th1p','model.th1m','model.fp','model.tp')
-  else
+    colnames(df.stats)<- c('date','obs.hs','obs.tp','obs.th1p','obs.th1m','model.hs','model.lm','model.th1p','model.th1m','model.fp','model.tp')
+  } else {
     colnames(df)<- c('date','obs.hs','model.hs','model.lm','model.th1p','model.th1m','model.fp','model.tp')
+    colnames(df.stats)<- c('date','obs.hs','model.hs','model.lm','model.th1p','model.th1m','model.fp','model.tp')
+  }
+  
+  # Avoid nan values
+  df.stats<-df.stats[!(is.na(df.stats$obs.hs)) & !(is.na(df.stats$model.hs)),]
+  # Print Stats info for Hs
+  str(comparisons(df.stats$obs.hs,df.stats$model.hs))
   
   # Plot
   if (plot) {
-    rangeYear <- c(year,year)
+    rangeYear <- c(year)
     switch (plotType,
             "full" = fullPlot(df,station,rangeYear),
             "qq"   = qqPlot(df,station,rangeYear),
@@ -38,6 +52,10 @@ validate1station <- function (station,year,candhisdir,hymexdir,ounpdir,plot = TR
     par(ask=FALSE)
   } else 
     return (df)
+}
+
+validate1stationLong <- function (station,yearmin,yearmax,candhisdir,hymexdir,ounpdir,plot = TRUE,
+                              plotType = "full") {
 }
 
 # read observations from buoy code-named "station" in Megagol Hindcast
@@ -58,7 +76,6 @@ readObservations <- function (station,year,candhisdir,hymexdir) {
 readWW3Model <- function (station,year,ounpdir) {
   filepath <- paste(ounpdir,"/MEGAGOL2015a-OUNP-",year-1,"_tab.nc",sep="")
   df.model<-readWW3OunpStation(station,filepath)
-  
   return (df.model)
 }
 
@@ -78,13 +95,11 @@ tsPlotlight <- function (df,station,rangeYear) {
 
 # plot Time series modeled against observations
 tsPlot <- function (df,station,rangeYear,mfrow) {
-  par(mfrow = mfrow)
-  
   # preprocess year for title
-  if (length(rangeYear == 2))
+  if (length(rangeYear) == 2)
     rangeYearstring <- paste(rangeYear[1],rangeYear[2],sep="-")
   else
-    reangeYearstring <- rangeYear
+    rangeYearstring <- rangeYear
   
   # base layer plot
   baseplot<-ggplot(df,aes(x=date)) +
@@ -94,49 +109,97 @@ tsPlot <- function (df,station,rangeYear,mfrow) {
     theme(legend.position = c(0.90, 0.95)) + # c(0,0) bottom left, c(1,1) top-right.
     theme(legend.background = element_rect(fill = "#ffffffaa", colour = NA))+
     theme(text = element_text(size=20))+
-    labs(title=paste(station,": ",rangeYearstring,sep=""))
+    labs(title=paste(mapStationName(station)," (",station,")",": ",rangeYearstring,sep=""))
   
   plots <- list()  # new empty list
+  
   phs <- baseplot +
-    geom_line(aes(y=df$obs.hs),alpha=2/3) +
-    geom_line(aes(y=df$model.hs),alpha=2/3,size=1.2)
-  #   plot(df$date,df$obs.hs,type='l',ylim = c(0,8))
-  #   par(new=TRUE)
-  #   plot(df$date,df$model.hs,type='l',ylim = c(0,8),col='red')
+    geom_line(aes(y=obs.hs),alpha=3/3,color=cbbPalette[1]) +
+    geom_line(aes(y=model.hs),alpha=2/3,color=cbbPalette[2]) +
+    xlab("date") + 
+    ylab("Hs(m)")
   plots[[1]] <- phs
   if (station != "61002") {
-    # th1m = mean dir 
-    pth1m <- baseplot +
-      geom_point(aes(y=df$obs.th1m),alpha=2/3,size=1.2) +
-      geom_point(aes(y=df$model.th1m),alpha=2/3,size=1.2) 
-#     plot(df$date,df$obs.th1m,ylim = c(0,360))
-#     par(new=TRUE)
-#     plot(df$date,df$model.th1m,ylim = c(0,360),col='red')  
-    plots[[2]] <- pth1m
-    # th1p = peak dir 
-    pth1p <- baseplot +
-      geom_point(aes(y=df$obs.th1p),alpha=2/3,size=1.2) +
-      geom_point(aes(y=df$model.th1p),alpha=2/3,size=1.2)
-#     plot(df$date,df$obs.th1p,ylim = c(0,360))
-#     par(new=TRUE)
-#     plot(df$date,df$model.th1p,ylim = c(0,360),col='red')  
-    plots[[3]] <- pth1p
     # peak period
     ptp <- baseplot +
-      geom_line(aes(y=df$obs.tp),alpha=2/3) +
-      geom_line(aes(y=df$model.tp),alpha=2/3,size=1.2)
-#     plot(df$date,df$obs.tp,type='l',ylim = c(0,20))
-#     par(new=TRUE)
-#     plot(df$date,df$model.tp,type='l',ylim = c(0,20),col='red')  
-    plots[[4]] <- pth1m
+      geom_line(aes(y=obs.tp),alpha=3/3,color=cbbPalette[1]) +
+      geom_line(aes(y=model.tp),alpha=2/3,color=cbbPalette[2]) +
+      xlab("date") + 
+      ylab("Peak period(s)")
+    plots[[2]] <- ptp
+    
+    # th1m = mean dir 
+    pth1m <- baseplot +
+      geom_point(aes(y=obs.th1m),alpha=3/3,size=2,color=cbbPalette[1]) +
+      geom_point(aes(y=model.th1m),alpha=1/6,size=2,color=cbbPalette[2]) +
+      xlab("date") +  ylab("Mean dir(deg)")
+    plots[[3]] <- pth1m
+    
+    # th1p = peak dir 
+    pth1p <- baseplot +
+      geom_point(aes(y=obs.th1p),alpha=3/3,size=2,color=cbbPalette[1]) +
+      geom_point(aes(y=model.th1p),alpha=1/6,size=2,color=cbbPalette[2]) +
+      xlab("date") +  ylab("Peak dir(deg)")
+    plots[[4]] <- pth1p
+  } 
+  if (mfrow[1]== 4) {
+    multiplot(plotlist = plots, cols = 1)   
   } else {
-    par(mfrow = c(1,1))
+    for (i in seq(1,length(plots))) {
+      print(plots[[i]]) 
+    }
   }
-  multiplot(plotlist = plots, cols = 1) 
 }
 
 # plot qqplot of model time series againt observations
 qqPlot <- function (df,station,rangeYear) {
-  #df2 <- df[!is.na(df$obs.hs),]
-  qqplot(df$obs.hs,df$model.hs)
+  # preprocess year for title
+  if (length(rangeYear) == 2)
+    rangeYearstring <- paste(rangeYear[1],rangeYear[2],sep="-")
+  else
+    rangeYearstring <- rangeYear
+  
+  #QQPLOT
+  for (extension in extensions) {
+    tmp<-as.data.frame(qqplot(df$obs.hs,df$model.hs,plot.it=FALSE))
+    colnames(tmp)[1]<-'observed'
+    colnames(tmp)[2]<-'modeled'
+    assign(paste("qqp-vect.",extension,sep = ""),tmp)
+  }
+  l<-ls(pattern='qqp-vect.*')
+  d<-get(l[1])$observed
+  for (i in (1:length(l))) {
+    d<-cbind(d,get(l[i])$modeled)
+  }
+  d<-as.data.frame(d)
+  names<-substr(x = l,start = 10,stop = 20)
+  colnames(d)<-c('observed',as.vector(names))
+  
+  d2<-melt(d,id.vars = 1)
+  qqp<- ggplot(d2,aes(x=observed,y=value)) + 
+    theme(panel.background = element_rect(fill="white"))+
+    theme(text = element_text(size=20))+
+    theme_bw() +
+    theme(legend.position = c(0.95, 0.8)) + # c(0,0) bottom left, c(1,1) top-right.
+    theme(legend.background = element_rect(fill = "#ffffffaa", colour = NA))+
+    xlab("Hs(m) Observation") + 
+    ylab("Hs(m) Model") +
+    labs(title=paste(mapStationName(station)," (",station,")",": ",rangeYearstring,sep="")) +
+    #     scale_colour_manual("Model",values=cbbPalette2) +
+    geom_point(size=1.5,shape=3,colour="black") +
+    geom_abline(slope=1,colour="red",alpha=2/3)
+  
+  print(qqp)
+}
+
+# return a dataframe of usual statistics to compare two time series
+comparisons <- function (obs,model) {
+  df <- data.frame(
+    "correlation" = correlation(obs,model),
+    "bias" = bias(obs,model),
+    "rmse" = rmse(obs,model),
+    "si" = si(obs,model),
+    "maxerr" = maxerr(obs,model)
+    )
+  return (df)
 }

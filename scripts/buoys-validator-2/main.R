@@ -10,10 +10,10 @@ source("validate1station.R")
 # "61289" = "Le Planier",
 # "61431" = "Espiguette",
 
-df2 <- validate1station(station = "61431",
+df2 <- validate1station(station = "61004",
                  year = 2009,
                  candhisdir = "input/candhis/donnees_candhis_cerema", 
                  hymexdir = "input/GOL-buoy-hymex", 
                  ounpdir = "input/model/MEGAGOL2015-a/ounp",
-                 plot = TRUE,
-                 plotType = "ts")
+                 plot = FALSE,
+                 plotType = "qq") #should be 'full', 'ts' or 'qq'

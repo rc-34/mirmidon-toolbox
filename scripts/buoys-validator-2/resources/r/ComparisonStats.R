@@ -38,30 +38,3 @@ qqPlot <- function (obs,sim) {
   x <- rnorm(500, 0, 1); qqplot(obs,sim); qqline(x)
 }
 
-res <- list()
-
-stations=c("MeteoFranc","Espiguette","Sete","Leucate","Banyuls")#,"NICE","PORQUEROLLES")
-extensions<-c("ZWND10","ZWND6")
-year<-"2012"
-for (station in stations) {
-  for (extension in extensions) {
-    station=c("MeteoFranc")
-    extension<-c("ZWND6")
-    df <- get(paste(station,year,"extracted",sep="."))
-    df[,"date"] <- strftime(df[,"date"],format="%Y-%m-%d %H:%M:%S")
-    dates <- df[df[,'variable'] %in% "Hs(m)" & df[,'Source'] %in% paste("Model",extension,sep="-")  ,'date']
-    obs<-df[df[,'variable'] %in% "Hs(m)" & df[,'Source'] %in% "Buoy" & df[,'date'] %in% dates ,'value']
-    dates <- df[df[,'variable'] %in% "Hs(m)" & df[,'Source'] %in% "Buoy"  ,'date']
-    sim<-df[df[,'variable'] %in% "Hs(m)" & df[,'Source'] %in% paste("Model",extension,sep="-") & df[,'date'] %in% dates ,'value']
-    
-    c <- correlation(sim,obs)
-    b <- bias(sim,obs)
-    r <- rmse(sim,obs)
-    s <- si(sim,obs)
-    e <- maxerr(sim,obs)
-    assign(paste(station,extension,sep="."), list("correlation" = c, "bias" = b, "rmse" = r, "si" = s,"errormax" = e))
-    res <- c(res, list(get(paste(station,extension,sep="."))))
-    
-  }
-}
-
