@@ -4,8 +4,10 @@ source("readCandhis.R")
 source("resources/r/Multiplot.R")
 source("resources/r/ComparisonStats.R")
 
-cbbPalette <- c("lightgrey", "green","black", "blue", "green", "purple" ,"red")
+cbbPalette <- c("lightgrey", "purple", "green","black", "blue", "green", "purple" ,"red")
 cbbPalette2 <- c( "green", "purple", "blue", "red")
+max.hs <- 25
+max.tp <- 40
 
 #-- Main Function --# validate 1 station / all variables available
 validate1station <- function (station,year,candhisdir,hymexdir,ounpdir,plot = TRUE,
@@ -20,7 +22,7 @@ validate1station <- function (station,year,candhisdir,hymexdir,ounpdir,plot = TR
   df.model <- readWW3Model(station,year,ounpdir)
   
   # restrict data along range
-  start<-as.POSIXct(paste(year,"01-01 00:00:00",sep="-"),tz="GMT",format='%Y-%m-%d %H:%M:%S')
+  start<-as.POSIXct(paste(year,"01-01 01:00:00",sep="-"),tz="GMT",format='%Y-%m-%d %H:%M:%S')
   end<-as.POSIXct(paste(year+1,"01-01 00:00:00",sep="-"),tz="GMT",format='%Y-%m-%d %H:%M:%S')
   df.obs <- df.obs[df.obs$date >= as.POSIXct(start,tz="GMT") & df.obs$date <= as.POSIXct(end,tz="GMT") ,]
   df.model <- df.model[df.model$date >= as.POSIXct(start,tz="GMT") & df.model$date <= as.POSIXct(end,tz="GMT") ,]
@@ -37,13 +39,17 @@ validate1station <- function (station,year,candhisdir,hymexdir,ounpdir,plot = TR
     colnames(df.stats)<- c('date','obs.hs','model.hs','model.lm','model.th1p','model.th1m','model.fp','model.tp')
   }
   
-  # Avoid nan values
-  df.stats<-df.stats[!(is.na(df.stats$obs.hs)) & !(is.na(df.stats$model.hs)),]
-  # Print Stats info for Hs
-  str(comparisons(df.stats$obs.hs,df.stats$model.hs))
-  
   # Plot
   if (plot) {
+    # Avoid nan values
+    df.stats<-df.stats[!(is.na(df.stats$obs.hs)) & !(is.na(df.stats$model.hs)),]
+    # Print Stats info for Hs
+    str(comparisons(df.stats$obs.hs,df.stats$model.hs))
+    
+    # Filter data
+    df<-filter(df,station)
+  
+    # Plot
     rangeYear <- c(year)
     switch (plotType,
             "full" = fullPlot(df,station,rangeYear),
@@ -54,8 +60,32 @@ validate1station <- function (station,year,candhisdir,hymexdir,ounpdir,plot = TR
     return (df)
 }
 
-validate1stationLong <- function (station,yearmin,yearmax,candhisdir,hymexdir,ounpdir,plot = TRUE,
+# validate data for series of several year
+validate1stationRangeYear <- function (station,yearmin,yearmax,candhisdir,hymexdir,ounpdir,plot = TRUE,
                               plotType = "full") {
+  if (yearmin < 1961 | yearmax > 2012 | yearmax < yearmin) 
+    stop("Please verify date. Must be: 1960 < yearmin <= yearmax < 2013 ")
+  
+  df <- data.frame()
+  for (year in seq(yearmin,yearmax)) {
+    df.tmp <- validate1station(station,year,candhisdir,hymexdir,ounpdir,plot = FALSE)
+    # Could be optimised. Observations are read n times for nothing...
+    df <- rbind(df,df.tmp)
+  }
+  
+  # Plot
+  if (plot) {
+    # Filter data
+    df<-filter(df,station)
+    
+    rangeYear <- c(yearmin,yearmax)
+    switch (plotType,
+            "full" = fullPlot(df,station,rangeYear),
+            "qq"   = qqPlot(df,station,rangeYear),
+            "ts"   = tsPlotlight(df,station,rangeYear))
+    par(ask=FALSE)
+  } else 
+    return (df)
 }
 
 # read observations from buoy code-named "station" in Megagol Hindcast
@@ -160,13 +190,12 @@ qqPlot <- function (df,station,rangeYear) {
     rangeYearstring <- rangeYear
   
   #QQPLOT
-  for (extension in extensions) {
-    tmp<-as.data.frame(qqplot(df$obs.hs,df$model.hs,plot.it=FALSE))
-    colnames(tmp)[1]<-'observed'
-    colnames(tmp)[2]<-'modeled'
-    assign(paste("qqp-vect.",extension,sep = ""),tmp)
-  }
-  l<-ls(pattern='qqp-vect.*')
+  tmp<-as.data.frame(qqplot(df$obs.hs,df$model.hs,plot.it=FALSE))
+  colnames(tmp)[1]<-'observed'
+  colnames(tmp)[2]<-'modeled'
+  assign("qqp-vect",tmp)
+  
+  l<-ls(pattern='qqp-vect')
   d<-get(l[1])$observed
   for (i in (1:length(l))) {
     d<-cbind(d,get(l[i])$modeled)
@@ -201,5 +230,20 @@ comparisons <- function (obs,model) {
     "si" = si(obs,model),
     "maxerr" = maxerr(obs,model)
     )
+  return (df)
+}
+
+# filter df regarding potential NA & outliers values 
+filter <- function(df,station) {
+  df[is.na(df$obs.hs),'obs.hs'] <- 9999
+  df[df$obs.hs  > max.hs,'obs.hs'] <- NA
+  df[is.na(df$model.hs),'model.hs'] <- 9999
+  df[df$model.hs > max.hs,'model.hs'] <- NA
+  if (station != "61002") {
+    df[is.na(df$obs.tp),'obs.tp'] <- 9999
+    df[df$obs.tp   > max.tp,'obs.tp'] <- NA
+    df[is.na(df$model.tp),'model.tp'] <- 9999
+    df[df$model.tp > max.tp,'model.tp'] <- NA
+  }
   return (df)
 }

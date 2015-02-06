@@ -10,10 +10,21 @@ source("validate1station.R")
 # "61289" = "Le Planier",
 # "61431" = "Espiguette",
 
-df2 <- validate1station(station = "61004",
-                 year = 2009,
-                 candhisdir = "input/candhis/donnees_candhis_cerema", 
-                 hymexdir = "input/GOL-buoy-hymex", 
-                 ounpdir = "input/model/MEGAGOL2015-a/ounp",
-                 plot = FALSE,
-                 plotType = "qq") #should be 'full', 'ts' or 'qq'
+# df <- validate1station(station = "61004",
+#                  year = 2009,
+#                  candhisdir = "input/candhis/donnees_candhis_cerema", 
+#                  hymexdir = "input/GOL-buoy-hymex", 
+#                  ounpdir = "input/model/MEGAGOL2015-a/ounp",
+#                  plot = FALSE,
+#                  plotType = "qq") #should be 'full', 'ts' or 'qq'
+
+
+df <- validate1stationRangeYear(station = "61002",
+                       yearmin = 2007,
+                       yearmax = 2010,
+                       candhisdir = "input/candhis/donnees_candhis_cerema", 
+                       hymexdir = "input/GOL-buoy-hymex", 
+                       ounpdir = "input/model/MEGAGOL2015-a/ounp",
+                       plot = TRUE,
+                       plotType = "full") #should be 'full', 'ts' or 'qq'
+
