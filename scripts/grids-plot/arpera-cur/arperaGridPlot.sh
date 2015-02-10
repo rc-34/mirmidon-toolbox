@@ -3,48 +3,63 @@
 ## PARAMETERS ##
 gridfile="grids.nc"
 fluxfile="FLUX_EG4_201201.nc"
-
-outfile1="arperaGrid.ps"
+fluxfilerec="ARPERAREC-2012.nc"
+workdir="work"
+outfile1="arperaGrid"
 rm $outfile1
 
 paramJ=-JM20c
 paramB=-Bf5a10:longitude:/f2.5a5:latitude:/:."Arpera original Grid (zoom)":WeSn
 
-gmtset PAPER_MEDIA a4
-gmtset Y_AXIS_TYPE ver_text
-gmtset BASEMAP_TYPE fancy+
-gmtset FRAME_WIDTH 0.08c
-gmtset ANNOT_FONT_SIZE 8p
-gmtset ANNOT_OFFSET_PRIMARY 0.1c
-gmtset LABEL_FONT_SIZE 8p
-gmtset LABEL_OFFSET 0.2c
-gmtset D_FORMAT %8.8f
+#png_resolution=800
+gmt gmtset PS_MEDIA a3
+gmt gmtset MAP_ANNOT_ORTHO ver_text
+gmt gmtset MAP_FRAME_TYPE fancy+
+gmt gmtset MAP_FRAME_WIDTH 0.08c
+gmt gmtset FONT_TITLE Helvetica
+gmt gmtset FONT_TITLE 14p
+gmt gmtset MAP_TITLE_OFFSET 0.3c
+gmt gmtset FONT_LABEL 8p
+gmt gmtset MAP_LABEL_OFFSET 0.2c
+gmt gmtset FORMAT_FLOAT_OUT %8.8f
 ## END PARAMETERS ##
 
 # Set envelope
-#envelope="-R-51.4199981689/75.3700027466/-3.20000004768/83.2300033569"
 envelope="-R-20/50/28/53"
+envelope="-R2/6.80/41.30/43.70"
+# envelope="-R1/10/40/48"
 
 #extract long/lat
-grd2xyz -V ${gridfile}?medh.lon > longitude
-grd2xyz -V ${gridfile}?medh.lat > latitude 
-grd2xyz -V ${fluxfile}?TSUR > flux
+ncks -v medh.lon ${gridfile}  | sed '1,5d' | sed '/^$/d' | awk 'BEGIN {FS = "="} ;{print $2}' > $workdir/longitude
+ncks -v medh.lat ${gridfile}  | sed '1,5d' | sed '/^$/d' | awk 'BEGIN {FS = "="} ;{print $2}' > $workdir/latitude
 
-join longitude latitude > temp
-join temp flux > joined.xyz
-awk '{ print  $3" "$5" "$7}' joined.xyz > grid.xyz
+paste $workdir/longitude $workdir/latitude > $workdir/temp
+cat -n $workdir/temp > $workdir/temp2
+awk '{b=($1-1);print  $2" "$3" "b}' $workdir/temp2 > $workdir/grid.xyz
 
 # basemap
-psbasemap $paramJ $envelope -Bf5a10:longitude:/f2.5a5:latitude:/:."Arpera original Grid (zoom)":WeSn -K -V >> $outfile1
+gmt psbasemap $paramJ $envelope -Bf0.5a1:longitude:/f.5a1:latitude:/:."Arpera & ArperaREC Grid (zoom)":WeSn -P -K -V >> ${outfile1}.ps
 
 # add coast
-pscoast $paramJ $envelope -Dl -G#d9bb7a -Bf5a10:longitude:/f2.5a5:latitude:/:."Arpera original Grid (zoom)":WeSn -W1/0.2p,black,solid -N1/0.2p,#0000FF,solid -S#5BA0B8 -C0.1p,#5BA0B8,solid -K -O >> $outfile1 
+gmt pscoast $paramJ $envelope -Df -G200 -C200 -K -P -O >> ${outfile1}.ps
 
-# add grid points
-psxy grid.xyz -JM20c $envelope -Sp0.05c -O -V >> $outfile1
+# add buoy LION location
+echo "4.64 42.06 LION"> $workdir/buoy.xy
+gmt psxy $workdir/buoy.xy $paramJ $envelope -Sd0.3c -Gblue -Wblue -K -O -P -V >> ${outfile1}.ps
+gmt pstext $workdir/buoy.xy -JM20c $envelope -D0.5k -O -K -P -V >> ${outfile1}.ps
+
+# add grid ARPERAREC points
+gmt grd2xyz $fluxfilerec?TSUR[1] $envelope  > $workdir/gridrec.xyz
+gmt psxy $workdir/gridrec.xyz $paramJ $envelope -Sp0.1c -Gpurple -Wpurple -K -O -P -V >> ${outfile1}.ps
+# gmt pstext gridrec.xyz -JM20c $envelope -O -P -V >> ${outfile1}.ps
+
+# add grid ARPERA points
+gmt psxy $workdir/grid.xyz $paramJ $envelope -Sp0.1c -Wgreen -Ggreen  -O -P -V >> ${outfile1}.ps
+# gmt pstext $workdir/grid.xyz $paramJ $envelope -O -P -V >> ${outfile1}.ps
 
 # To raster
-ps2raster -Tg -E600 -P -A -D. $outfile1
+#gmt ps2raster -Tg -E600 -P -A -D. ${outfile1}.ps
+gmt ps2raster -Tg -P -A -D. ${outfile1}.ps
 
 # Clean folder
-#rm -f $outfile1
+rm -f ${outfile1}.ps

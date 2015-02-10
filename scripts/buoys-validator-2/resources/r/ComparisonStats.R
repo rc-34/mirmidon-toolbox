@@ -19,6 +19,7 @@ rmse <- function (obs,sim) {
 }
 
 # Return the root mean squared relative error -- scatter index -- of two time series (observed, simulated)
+# It presents the percentage of RMS difference with respect to mean observation or it gives the percentage of expected error for the parameter
 si <- function (obs,sim) {
   if (length(obs) != length(sim)) stop("SI : obs and sim timeseries are not of same length.")
   return (sqrt( sum((obs-sim)^2) / sum(obs*obs) ))

@@ -10,7 +10,7 @@ source("validate1station.R")
 # "61289" = "Le Planier",
 # "61431" = "Espiguette",
 
-# df <- validate1station(station = "61004",
+# df <- validate1station(station = "61191",
 #                  year = 2009,
 #                  candhisdir = "input/candhis/donnees_candhis_cerema", 
 #                  hymexdir = "input/GOL-buoy-hymex", 
@@ -19,7 +19,7 @@ source("validate1station.R")
 #                  plotType = "qq") #should be 'full', 'ts' or 'qq'
 
 
-df <- validate1stationRangeYear(station = "61002",
+df <- validate1stationRangeYear(station = "61191",
                        yearmin = 2007,
                        yearmax = 2010,
                        candhisdir = "input/candhis/donnees_candhis_cerema", 
