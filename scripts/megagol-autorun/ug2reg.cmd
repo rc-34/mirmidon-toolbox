@@ -31,8 +31,10 @@ fi
 beginningyear=$1
 endyear=$2
 interpoldir="resources/interpolresources"
-regoutputsdir="outputs/ounfREG"
-finidir="fini"
+regoutputsdir="outputs/ounf/REG"
+regoutputsdir="REG"
+megagoloutputsdir="outputs/gridded"
+finidir="outputs"
 
 if [ ! -d $regoutputsdir ];
 	then
@@ -52,7 +54,7 @@ for year in $sequence ; do
 	cp ../../$interpoldir/ww3_grid.inp.reg .
 	cp ../../$interpoldir/ww3_ounf.inp.reg .
 	cp ../../$interpoldir/ww3_ounf.inp.ug .
-	cp ../../$interpoldir/bathy_golreg-0.015deg.txt ./bathy_golreg.txt
+	cp ../../$interpoldir/big.xy ./big.xy
 
 	formatinpInterpol ./ $year
 	log $? "Format date in .inp files"
@@ -61,7 +63,7 @@ for year in $sequence ; do
 	ln -sf ww3_grid.inp.ug ww3_grid.inp
 	../../$interpoldir/ww3_grid > grid.out.ug
 	log $? "Re-process ug grid with updated ww3_grid binary"
-	mv mod_def.ww3  mod_def.ug
+	mv mod_def.ww3 mod_def.ug
 
 	ln -sf ww3_grid.inp.reg ww3_grid.inp
 	../../$interpoldir/ww3_grid > grid.out.reg
@@ -69,27 +71,35 @@ for year in $sequence ; do
 	mv mod_def.ww3 mod_def.reg
 
 	ln -sf mod_def.ug  mod_def.ww3
-	#qsub -N shel job_shel.pbs
-	mv out_grd.ww3  out_grd.ug
+	#ln -sf $megagoloutputsdir/$year/out_grd.ww3 out_grd.ug
+	cp $megagoloutputsdir/$year/out_grd.ww3 out_grd.ug
+	log $? "copy out_grd.ww3.ug"
+	rightnow
+	log "notice" "$d"
 
 	../../$interpoldir/ww3_gint > grid.out.interpolate
 	log $? "Interpolation to reg grid"
+	rightnow
+	log "notice" "$d"
 
 	ln -sf ww3_ounf.inp.reg ww3_ounf.inp
 	ln -sf mod_def.reg mod_def.ww3
 	ln -sf out_grd.reg out_grd.ww3
 	../../$interpoldir/ww3_ounf
 	log $? "ww3_ounf processing for reg grid"
+	rightnow
+	log "notice" "$d"
 
-	mv GOLREG*.nc ../../$regoutputsdir/.
+	mv MEGAGOL2015areg-BIG-OUNF*.nc ../../$regoutputsdir/.
 	log $? "Move interpolated nc files"
 
 	ln -sf ww3_ounf.inp.ug ww3_ounf.inp
 	ln -sf mod_def.ug mod_def.ww3
 	ln -sf out_grd.ug out_grd.ww3
 	log $? "Switch back inp and ww3 files"
-	#./ww3_ounf
 
 	cd ../..
 	log $? "Go back to root directory"
 done
+rightnow
+log $? "That's all folks! -- $d -- "

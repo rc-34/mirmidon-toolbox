@@ -29,9 +29,10 @@ $ File prefix
 $ number of characters in date
 $ IX, IY range
 $
- MEDNORD-     
+ GOLREG-     
  6
- 1 050882 1 1 
+ 1 321 1 161
+$ 0.5 deg     1 97 1 49 
 $
 $ For each field and time a new file is generated with the file name
 $ ww3.date_xxx.nc , where date is a conventional time idicator with S3

@@ -3,7 +3,7 @@ $ WAVEWATCH III Grid output post-processing                            $
 $--------------------------------------------------------------------- $
 $ Time, time increment and number of outputs
 $
- ((begindate))  3600  9000
+ ((begindate))  3600  700
 $
 $
 $ Output request flags identifying fields as in ww3_shel.inp. See that
@@ -11,8 +11,7 @@ $ file for a full documentation of field output options. Namelist type
 $ selection is used here (for alternative F/T flags, see ww3_shel.inp).
 $
   N
-  WND CUR HS LM  T01 HIG DIR FP EF UST CHA TAW WCH SXY  TWO BHD FOC USS P2S P2L
-$  HS FP CUR WND SPR
+  WND CUR HS LM  T02 T01 HIG DIR FP EF UST CHA TAW WCH SXY  TWO BHD FOC USS P2S P2L
 $
 $--------------------------------------------------------------------- $
 $ Output type 4 [3,4] (version netCDF)   
@@ -29,10 +28,9 @@ $ File prefix
 $ number of characters in date
 $ IX, IY range
 $
- GOLREG-     
+ MEGAGOL2015areg-BIG-OUNF
  6
- 1 321 1 161
-$ 0.5 deg     1 97 1 49 
+ 1 256 1 128 
 $
 $ For each field and time a new file is generated with the file name
 $ ww3.date_xxx.nc , where date is a conventional time idicator with S3
