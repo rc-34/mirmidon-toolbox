@@ -18,12 +18,12 @@ source ./resources/sh/reformat.sh
 rightnow
 log "notice" "STARTING-interpol... $d"
 
-if [ $# -ne 2 ]
-then
-	log "warning" "Usage: ./ug2reg.cmd BEGINNINGYEAR ENDYEAR"
-	log "warning" "Exemple: ./ug2reg.cmd 1961 2012"
-	log -1
-fi
+# if [ $# -ne 2 ]
+# then
+# 	log "warning" "Usage: ./ug2reg.cmd BEGINNINGYEAR ENDYEAR"
+# 	log "warning" "Exemple: ./ug2reg.cmd 1961 2012"
+# 	log -1
+# fi
 beginningyear=2012
 endyear=2012
 interpoldir="resources/interpolresources"
