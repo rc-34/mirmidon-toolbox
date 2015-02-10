@@ -38,10 +38,10 @@ log "notice" "Appending all months into yearly files"
 
 # 2) foreach year
 # append data in yearly files
-years=$(printf "%04d " $(seq 1961 2012))
-years="2012 2012"
+years=$(printf "%04d " $(seq 1959 2012))
+# years="2012 2012"
 months=$(printf "%02d " $(seq 1 12))
-#months="09 10 11 12"
+# months="09"
 isfirstyear=1
 for year in $years; do
 	outfile="ARPERAREC-$year.nc"
@@ -49,7 +49,6 @@ for year in $years; do
 	for month in $months; do
 		infiles=$infiles"  $outdir/$year/$month/ARPERAREC-$year$month.nc"
 	done
-
 	if [ $isfirstyear -eq 0 ] 
 		then 
 		infiles="$outdir/$(($year-1))/12/ARPERAREC-$(($year-1))12.nc "$infiles
@@ -57,8 +56,10 @@ for year in $years; do
 	isfirstyear=0
 
 	# log "notice" "ncrcat $infiles $outdir/$year/$outfile..."
-	ncrcat $infiles $outdir/$year/$outfile 
+	/Users/rchailan/Applications/nco/4.4.6/bin/ncrcat $infiles $outdir/$year/$outfile 
 	log $? "ncrcat $year"
-done
 
+	rm -Rf $workdir/*
+	log $? "Clean "
+done
 echo "...That's all folks!"

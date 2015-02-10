@@ -56,7 +56,7 @@ Yinc=50k
 # nearneighbor sections/mandatory
 paramN=-N10/1
 # nearneighbor radius of circle (using Xinc)
-paramS=-S40k
+paramS=-S35k
 
 #define origin time
 month=${fluxfilename:14:2}
@@ -74,12 +74,13 @@ if [ -f $outdir/$year/$month/$outfile ]
 fi 
 log $? "STEP 1: Init for $outdir/$year/$month/$outfile"
 
-#extract long/lat
+#extract lon/lat
 ncks -v medh.lon ${gridfile}  | sed '1,5d' | sed '/^$/d' | awk 'BEGIN {FS = "="} ;{print $2}' > $workdir/longitude
 ncks -v medh.lat ${gridfile}  | sed '1,5d' | sed '/^$/d' | awk 'BEGIN {FS = "="} ;{print $2}' > $workdir/latitude
 log $? "STEP2: Extract origin points coordinates"
 paste $workdir/longitude $workdir/latitude > $workdir/lonlat
 log $? "Join lon lat file"
+
 
 #extract timesteps
 timesteps=$(cdo showtimestamp $fluxfile)
@@ -90,11 +91,11 @@ for var in $variables; do
 	# 3) foreach timestep
 	tindex=0	
 	for curtimestep in $timesteps; do
-		log "notice" "TODO3 : regrid data for var ${var} and timestep ${curtimestep}"
+		# log "notice" "TODO3 : regrid data for var ${var} and timestep ${curtimestep}"
 		# trick to print on three digits and avoid time gaps while ncrcatting
 		curtimestep3d=$(printf "%03d" $tindex)
 
-		ncks -v $var -d time,$tindex inputs/gmtcompliant/ARPERACUR-201201.nc | sed '1,20d' | sed '/^$/d' | awk 'BEGIN {FS = "="} ;{print $3}' | awk '{print $1}' | sed '/^$/d' > $workdir/current_flux
+		ncks -v $var -d time,$tindex $fluxfile | sed '1,20d' | sed '/^$/d' | awk 'BEGIN {FS = "="} ;{print $3}' | awk '{print $1}' | sed '/^$/d' > $workdir/current_flux
 		
 		paste $workdir/lonlat $workdir/current_flux > $workdir/$var-$curtimestep3d.xyz
 
@@ -117,8 +118,8 @@ for var in $variables; do
 		
 		ncrename -h -d lon,longitude -d lat,latitude $workdir/$var-$curtimestep3d.grd
 		
-		#add variable time and set time with current time step
-		hour=$((($tindex + 1)*6))
+		#add variable time and set time with current time step (first frame is at 6:00PM)
+		hour=$((($tindex + 3)*6))
 		ncap -h -O -s "time=$hour" $workdir/$var-$curtimestep3d.grd $workdir/$var-$curtimestep3d.grd
 		#add meta data on time variable
 		ncatted -h -a calendar,time,c,c,"gregorian" $workdir/$var-$curtimestep3d.grd
@@ -138,8 +139,6 @@ for var in $variables; do
 		#increment time index
 		tindex=$((tindex + 1))
 	done ##end foreach timestep
-	
-
 	# 4) concat each time step
 	log "notice" "STEP4: concat timestep for variable ${var}"
 	ncrcat $workdir/$var*.grd $workdir/$var-$outfile
@@ -157,7 +156,6 @@ for var in $variables; do
 	ncatted -h -a standard_name,$var,c,c,"$var"  $workdir/$var-$outfile
 	ncatted -h -a coordinates,$var,c,c,"longitude latitude"  $workdir/$var-$outfile
 done ##end foreach var
-rm $work/lonlat
 
 #5) finally join variables
 log "notice" "STEP5 : join all freshly concatened files for each variables into one"

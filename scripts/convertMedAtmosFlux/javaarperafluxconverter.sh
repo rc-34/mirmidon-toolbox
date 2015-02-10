@@ -12,7 +12,7 @@ log "notice" "STARTING... $d"
 if [ $# -ne 2 ] 
 	then
 	echo "Usage: ./javaarperafluxconverter.sh <path-to-arperaorig-flux-files> <path-to-arperacgmtcompliant-flux-files>"
-	echo "example: ./javaarperafluxconverter.sh ./inputs/origin/ ./inputs/gmtcompliant/"
+	echo "example: ./javaarperafluxconverter.sh ./inputs/origin ./inputs/gmtcompliant"
 	exit 1
 fi
 
