@@ -27,22 +27,22 @@ origindir="origin"
 concatdir="concat"
 workdir="work"
 outdir="outputs"
-years=$(seq 1961 1969)
-years=$(seq 1961 1961)
+# years=$(seq 1961 1969)
+years=$(seq 1995 2009)
 sst="sst"
 vomecrty="vomecrty"
 vozocrtx="vozocrtx"
 ## END PARAMETERS ##
 
-# 0) clean & init
-log "notice" "STEP0: init"
-if [ -d $workdir ]
-	then
-	rm -Rf $workdir
-fi
-mkdir $workdir
-
 for year in  $years ; do
+	# 0) clean & init
+	log "notice" "STEP0: init"
+	if [ -d $workdir ]
+		then
+		rm -Rf $workdir
+	fi
+	mkdir $workdir
+
 	# 1) untar & move to the good folder
 	log "notice" "STEP1: prepare origin"
 

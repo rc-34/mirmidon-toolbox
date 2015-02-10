@@ -103,10 +103,10 @@ for yearlync in $( ls $indir ) ; do
 		# curtimestep3D is the day number after the origin date: xx/xx/xx 12:00:00
 
 		gmt grd2xyz $indir/$yearlync?$var[$tindex] > $workdir/current_flux
-		log $? "extract $var[$index]"
+		# log $? "extract $var[$index]"
 		paste $workdir/longitude $workdir/latitude > $workdir/lonlat
 		paste $workdir/lonlat $workdir/current_flux > $workdir/joined.xyz
-		log $? "Join data in xyz file"
+		# log $? "Join data in xyz file"
 
 		awk '{ print  $3" "$6" "$9}' $workdir/joined.xyz > $workdir/$var-temp-$curtimestep3d.xyz
 		# rm $workdir/joined.xyz
@@ -114,17 +114,17 @@ for yearlync in $( ls $indir ) ; do
 		# before interpolating, set land data to NAN to not be included into shoreline interpolation
 		awk '{ if($3!=0) {print $1"	"$2"	"$3}; }' $workdir/$var-temp-$curtimestep3d.xyz > $workdir/$var-$curtimestep3d.xyz
 		gmt nearneighbor $workdir/$var-$curtimestep3d.xyz $envelope -I${Xinc}/${Yinc} $paramN $paramS -G$outdir/$var-$curtimestep3d.grd
-		log $? "Interpolation"
+		# log $? "Interpolation"
 		
 		# apply mask
 		gmt grdmath $outdir/$var-$curtimestep3d.grd $workdir/land_mask.grd OR = $outdir/masked_$var-$curtimestep3d.grd
 		#mv $outdir/$var-$curtimestep3d.grd $outdir/masked_$var-$curtimestep3d.grd
-		log $? "Mask"
+		# log $? "Mask"
 		
 		# refractor var
 		# ncrename -h -d x,longitude -d y,latitude -v x,longitude -v y,latitude -v z,$var $outdir/masked_$var-$curtimestep3d.grd
 		ncrename -h -d lon,longitude -d lat,latitude -v lon,longitude -v lat,latitude -v z,$var $outdir/masked_$var-$curtimestep3d.grd
-		log $? "ncrename dim&vars"
+		# log $? "ncrename dim&vars"
 		ncatted -h -O -a long_name,longitude,d,f," " $outdir/masked_$var-$curtimestep3d.grd
 		ncatted -h -a long_name,longitude,c,c,"longitude"  $outdir/masked_$var-$curtimestep3d.grd
 		ncatted -h -a units,longitude,c,c,"degrees_east" $outdir/masked_$var-$curtimestep3d.grd
