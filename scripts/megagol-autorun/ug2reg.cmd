@@ -34,7 +34,7 @@ beginningyear=2012
 endyear=2012
 interpoldir="resources/interpolresources"
 regoutputsdir="outputs/ounf/REG"
-megagoloutputsdir="/gpfs2/scratch/chailanr/mirmidon-toolbox/scripts/megagol-autorun/outputs/gridded"
+megagoloutputsdir="/gpfs2/scratch/chailanr/mirmidon-toolbox/scripts/megagol-autorun/work"
 work="workREG"
 
 if [ ! -d $regoutputsdir ];
