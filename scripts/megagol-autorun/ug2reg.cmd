@@ -24,8 +24,8 @@ then
 	log "warning" "Exemple: ./ug2reg.cmd 1961 2012"
 	log -1
 fi
-beginningyear=$1
-endyear=$2
+beginningyear=2012
+endyear=2012
 interpoldir="resources/interpolresources"
 regoutputsdir="outputs/ounf/REG"
 megagoloutputsdir="/gpfs2/scratch/chailanr/mirmidon-toolbox/scripts/megagol-autorun/outputs/gridded"
