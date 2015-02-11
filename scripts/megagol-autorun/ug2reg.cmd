@@ -4,14 +4,19 @@
 # @ job_type = serial
 # @ wall_clock_limit = 10:00:00,9:50:00
 # @ environment = COPY_ALL
+# @ node_usage = not_shared
 # @ queue
 
 ###ENV###
+source /opt/cluster/softs/gcc-4.6.x-soft/system/module/3.2.10/Modules/3.2.10/init/sh
+module purge
+module load hpclr-wrapper intel-13.0.1 openmpi-1.6.5-intel
+
 export WORKINGDIR=/gpfs2/scratch/chailanr/interpolator/mirmidon-toolbox/scripts/megagol-autorun	
 export WWATCH3_NETCDF=NC4
 export NETCDF_CONFIG=/work/mirmidon/softs/intel-13.x-soft/io/netcdf/netcdf-fortran-4.1.3/bin/nc-config
-export LD_LIBRARY_PATH=/work/mirmidon/softs/intel-13.x-soft/io/nco/nco-4.4.2/lib:/work/mirmidon/softs/intel-13.x-soft/io/netcdf/netcdf-fortran-4.1.3/lib:$LD_LIBRARY_PATH
-export PATH=/work/mirmidon/softs/intel-13.x-soft/io/nco/nco-4.4.2/bin:$PATH
+export LD_LIBRARY_PATH=/work/mirmidon/softs/intel-13.x-soft/io/netcdf/netcdf-fortran-4.1.3/lib:$LD_LIBRARY_PATH
+
 echo 'POSTPROCESSING...'
 echo 'Change directory to $WORKINGDIR'
 
