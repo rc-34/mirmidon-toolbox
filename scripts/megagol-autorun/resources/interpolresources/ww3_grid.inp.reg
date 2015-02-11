@@ -316,12 +316,14 @@ $ and with continuous ice treatment.
 $
 $TESt405 version corrigée par Fabrice
 $
-&SIN4 BETAMAX = 1.55, ZWND = 10., Z0MAX = 0.0020, TAUWSHELTER = 0.0 /
-&SDS4 SDSC2 = -2.2E-5, SDSBR = 0.00085, SDSCUM = 0.000, FXFM3 = 2.5 /
+&SIN4 BETAMAX = 1.55, ZWND = 6., Z0MAX = 0.0020,   
+TAUWSHELTER = 0.0 /
+&SDS4 SDSC2 = -2.2E-5 , SDSBR = 0.00085, SDSCUM = 0.000, 
+SDSBR = 0.00085, FXFM3= 2.5 /
 &SNL1 NLPROP = 2.7E7 /
 &REF1 REFCOAST=0.01 /
-$  use EXPFSN  ou EXPFSPSI  or PEXFSFCT
-&UG   EXPFSN = T /
+&UG  UGOBCAUTO =  F,  EXPFSN = T /
+&OUTS E3D = 1, P2SF = 1, US3D  = 1, I1US3D = 1., I2US3D = 30. /
 $
 $ Mandatory string to identify end of namelist input section.
 $
