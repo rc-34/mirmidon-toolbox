@@ -92,7 +92,8 @@ for year in $sequence ; do
 	rightnow
 	log "notice" "$d"
 
-	../../$interpoldir/ww3_gint > grid.out.interpolate
+	cp ../../$interpoldir/ww3_gint .
+	ww3_gint &> grid.out.interpolate 
 	log $? "Interpolation to reg grid"
 	rightnow
 	log "notice" "$d"
