@@ -50,6 +50,9 @@ fi
 sequence=$(seq $beginningyear $endyear)
 log $? "Sequence : determined."
 
+while [ TRUE ]; do ps -A | grep ww3_gint | tail -n 1 | awk '{print $1}' | xargs -i cat /proc/{}/status | grep VmRSS| awk '{print $2}'; sleep 1; done > VmRSS.ww3 2>&1 &
+while [ TRUE ]; do ps -A | grep ww3_gint | tail -n 1 | awk '{print $1}' | xargs -i cat /proc/{}/status | grep VmSize| awk '{print $2}'; sleep 1; done > VmSize.ww3 2>&1 &
+
 for year in $sequence ; do
 	workdir=$work/$year
 	if [ ! -d $workdir ]; 
