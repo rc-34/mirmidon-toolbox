@@ -2,7 +2,7 @@
 # @ account_no = mirmidon
 # @ class = intel
 # @ job_type = serial
-# @ wall_clock_limit = 10:00:00,9:50:00
+# @ wall_clock_limit = 72:00:00,71:50:00
 # @ environment = COPY_ALL
 # @ node_usage = not_shared
 # @ queue
@@ -35,7 +35,7 @@ log "notice" "STARTING-interpol... $d"
 # 	log "warning" "Exemple: ./ug2reg.cmd 1961 2012"
 # 	log -1
 # fi
-beginningyear=2012
+beginningyear=2008
 endyear=2012
 interpoldir="resources/interpolresources"
 regoutputsdir="outputs/ounf/REG"
@@ -49,9 +49,6 @@ fi
 
 sequence=$(seq $beginningyear $endyear)
 log $? "Sequence : determined."
-
-while [ TRUE ]; do ps -A | grep ww3_gint | tail -n 1 | awk '{print $1}' | xargs -i cat /proc/{}/status | grep VmRSS| awk '{print $2}'; sleep 1; done > VmRSS.ww3 2>&1 &
-while [ TRUE ]; do ps -A | grep ww3_gint | tail -n 1 | awk '{print $1}' | xargs -i cat /proc/{}/status | grep VmSize| awk '{print $2}'; sleep 1; done > VmSize.ww3 2>&1 &
 
 for year in $sequence ; do
 	workdir=$work/$year
